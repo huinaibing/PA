@@ -1,0 +1,7 @@
+#ifndef __CONSTANT_DATAS__
+#define __CONSTANT_DATAS__
+
+#define JPSI_PARTICAL_MASS 3.096916 // GeV
+#define ELECTRON_PARTICAL_MASS 0.000511 // GeV
+
+#endif

@@ -1,0 +1,131 @@
+#ifndef __UTILS__
+#define __UTILS__
+
+#include "TMath.h"
+#include "TGraphErrors.h"
+#include "TH2D.h"
+
+namespace xqy
+{
+    /*包含以下要素 直接使用以下函数就行了不要自己写了
+    1. 计算粒子的快度
+    2. 计算粒子的伪快度
+    3. 计算粒子的能量
+    4. 计算粒子的横动量pt
+    5. 计算质心系的快度
+    6. 计算Wgammap
+    7. 计算J/psi, psi', upsilon的截面
+    8. 画带有误差棒的TGraphErrors
+    9. 计算平方根误差
+    10. 拟合w_gamma_p和截面
+    */
+    class Utils
+    {
+    public:
+        static constexpr float sigma_p_jpsi = 4.06;
+        static constexpr float epsilon_jpsi = 0.65;
+        static constexpr float proton_mass = 0.938272; // GeV
+        static constexpr float jpsi_mass = 3.0969;     // GeV
+        static constexpr float psi2s_mass = 3.686097; // GeV
+        static float calculate_momentum(float px, float py, float pz)
+        // 计算粒子的动量
+        {
+            return TMath::Sqrt(px * px + py * py + pz * pz);
+        }
+
+        static double fit_w_gamma_p_and_cross_section(
+            double *x,
+            double *par)
+        {
+            return par[0] / (1 / TMath::Power(x[0], par[1]) + par[2]);
+        }
+
+        template <typename T>
+        static T calculate_sqrt_error(TH1 *projY)
+        // 计算平方根误差
+        // 对应于poisson分布
+        {
+            return TMath::Sqrt(projY->GetMean());
+        }
+
+        static float calculate_cross_section_supplement_power_law(
+            float w_gamma_p,
+            float sigma_p = xqy::Utils::sigma_p_jpsi,
+            float epsilon = xqy::Utils::epsilon_jpsi,
+            float VM_mass = xqy::Utils::jpsi_mass)
+        // 计算J/psi, psi', upsilon的截面
+        // 默认参数是J/psi的
+        // 公式见STARlight论文的公式（23）
+        {
+            // (m_p + m_V)^2 / W^2
+            float mid_term_right = TMath::Power(xqy::Utils::proton_mass + VM_mass, 2) / (w_gamma_p * w_gamma_p);
+            // (1 - (m_p + m_V)^2 / W^2)^2
+            float mid_term = (1 - mid_term_right) * (1 - mid_term_right);
+
+            return sigma_p * mid_term * TMath::Power(w_gamma_p, epsilon);
+        }
+
+        static double calculate_center_of_mass_rapidity(
+            double E1, double gamma1,
+            double E2, double gamma2)
+        // 计算质心系的快度（相对于实验室系的）、
+        // 这里默认粒子1方向为正，粒子2方向为负
+        {
+            double beta1 = TMath::Sqrt(1 - 1 / (gamma1 * gamma1));
+            double beta2 = TMath::Sqrt(1 - 1 / (gamma2 * gamma2));
+
+            double beta_cms = (E1 * beta1 - E2 * beta2) / (E1 + E2);
+
+            return xqy::Utils::calculate_rapidity(beta_cms);
+        }
+
+        static float calculate_rapidity(float E, float pz)
+        // 计算粒子的快度
+        {
+            return 0.5 * TMath::Log((E + pz) / (E - pz));
+        }
+
+        static float calculate_rapidity(double beta)
+        // 计算粒子的快度
+        // 和上面的函数不同的是，这里是直接传入beta
+        {
+            return 0.5 * TMath::Log((1 + beta) / (1 - beta));
+        }
+
+        static float calculate_energy(float px, float py, float pz, float mass)
+        // 计算粒子的能量
+        {
+            return TMath::Sqrt(px * px + py * py + pz * pz + mass * mass);
+        }
+
+        static float calculate_pt(float px, float py)
+        // 计算粒子的横动量pt
+        {
+            return TMath::Sqrt(px * px + py * py);
+        }
+
+        static float calculate_eta(float px, float py, float pz)
+        // 计算粒子的伪快度eta
+        {
+            float p = TMath::Sqrt(px * px + py * py + pz * pz);
+            return 0.5 * TMath::Log((p + pz) / (p - pz));
+        }
+
+        static float calculate_w_gamma_p_jpsi(float E_proton, float y, int direction = 1)
+        // 计算Wgammap，也就是这个质心系能量
+        // 单位取GeV
+        // 备注，第一个图的E_proton是6800GeV
+        // y是快度，应该是在实验室系下的快度（AI也是这么说的，先尝试一下）
+        {
+            float m_jpsi = 3.0969; // J/psi mass GeV
+            return TMath::Sqrt(2 * E_proton * m_jpsi * TMath::Exp(direction * y));
+        }
+
+        static float calculate_w_gamma_p(float mass, float E_proton, float y, int direction = 1)
+        {
+            return TMath::Sqrt(2 * E_proton * mass * TMath::Exp(direction * y));
+        }
+    };
+}
+
+#endif
