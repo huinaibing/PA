@@ -17,6 +17,85 @@ BaseDrawGraph::~BaseDrawGraph()
 {
 }
 
+
+TH1D *BaseDrawGraph::drawFromManager(BaseManager *manager,
+                                     int bin_num, float min, float max,
+                                     std::function<double()> get_data_func,
+                                     std::function<void(TH1D *)> draw_option,
+                                     std::function<void(TCanvas *)> canvas_option,
+                                     std::string graph_name,
+                                     int option,
+                                     std::string output_dir)
+// 这是画的TH1直方图
+{
+
+    TH1D *hist = new TH1D((graph_name).c_str(), (graph_name).c_str(), bin_num, min, max);
+
+    for (Long64_t i = 0; i < manager->getTotalEntries(); i++)
+    {
+        manager->setCurrentEntry(i);
+        double data = get_data_func();
+        hist->Fill(data);
+    }
+
+    draw_option(hist); // 应用绘图选项
+
+    TFile *output_file = nullptr;
+
+    // 根据选项决定输出文件的路径
+    // 如果选项为1，则输出到指定目录
+    if (option == 1)
+    {
+        // Create output directory if it doesn't exist
+        gSystem->mkdir(output_dir.c_str(), true);
+
+        // Create and save to output file
+        output_file = new TFile(
+            (output_dir + "/" + graph_name + ".root").c_str(),
+            "RECREATE");
+    } else if(option == 2)
+    {
+        // 选项为2时，直接返回hist，不创建文件
+        return hist;
+    }
+    else if (option == 0)
+    {
+        output_file = new TFile(
+            (graph_name + ".root").c_str(),
+            "RECREATE");
+    }
+    else
+    {
+        std::cerr << "错误的选项: " << option << std::endl;
+        return nullptr; // 返回空指针表示错误
+    }
+    
+
+    TCanvas *canvas = new TCanvas(
+        (graph_name + "_canvas").c_str(),
+        (graph_name + " canvas").c_str());
+
+    canvas_option(canvas); // 应用画布选项
+        
+    hist->Draw();
+    canvas->Write();
+    if (option == 1)
+    {
+        canvas->SaveAs((output_dir + "/" + graph_name + ".png").c_str()); // 保存为PNG文件
+    }
+    else
+    {
+        canvas->SaveAs((graph_name + ".png").c_str()); // 保存为PNG文件
+    }
+
+    output_file->Close();
+    delete output_file;
+    
+    return hist;
+}
+
+
+
 TH1D *BaseDrawGraph::drawFromManager(BaseManager *manager,
                                      int bin_num, float min, float max,
                                      std::function<float()> get_data_func,

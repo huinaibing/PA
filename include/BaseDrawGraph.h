@@ -6,6 +6,7 @@
 #include <functional>
 #include <string>
 #include "TGraphErrors.h"
+#include "TCanvas.h"
 
 class BaseDrawGraph
 {
@@ -13,6 +14,16 @@ public:
     BaseDrawGraph();
     ~BaseDrawGraph();
 
+    static TH1D *drawFromManager(BaseManager *manager,
+                                 int bin_num, float min, float max,
+                                 std::function<double()> get_data_func,
+                                 std::function<void(TH1D *)> draw_option,
+                                 std::function<void(TCanvas *)> canvas_option,
+                                 std::string graph_name,
+                                 int option = 0, std::string output_dir = "");
+
+    // 以下函数出于代码复用性考虑，暂停使用
+    // 我会重载这些函数，提供更具体的实现
     static TH1D *drawFromManager(BaseManager *manager,
                                  int bin_num, float min, float max,
                                  std::function<float()> get_data_func, std::string graph_name,

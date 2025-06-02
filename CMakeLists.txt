@@ -13,10 +13,8 @@ set(SOURCES
     main.cpp
     src/BaseDrawGraph.cpp
     src/BaseDoubleParticalChannelManager.cpp
-    src/JpsiParticleAnalysis.cpp
-    src/PPbCollision8_16Config.cpp
-    src/PPbCollision8_16ProtonPositive.cpp
     src/BaseCSVManager.cpp
+    instance/MixEvents.cpp
 )
 
 add_executable(particalDecayAnalysis ${SOURCES})
@@ -24,6 +22,8 @@ add_executable(particalDecayAnalysis ${SOURCES})
 target_include_directories(particalDecayAnalysis
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/instance_header
+        ${PROJECT_SOURCE_DIR}/config_header
 )
 
 # 需要root的时候添加
