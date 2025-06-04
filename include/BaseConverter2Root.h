@@ -1,5 +1,7 @@
 #ifndef BASE_CONVERTER_2_ROOT_H
 #define BASE_CONVERTER_2_ROOT_H
+
+// 这个转化是针对STARLIGHT软件设计的
 #include "TFile.h"
 #include "TTree.h"
 #include <iostream>
