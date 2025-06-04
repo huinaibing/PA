@@ -15,15 +15,15 @@ void remove_bkg()
         sig_bkg, 100, 0, 50,
         [&]() { return sig_bkg->getMass(); },
         [&](TH1D *hist) {
-            hist->SetTitle("Rebuild Mass of Muon from Jpsi");
-            hist->GetXaxis()->SetTitle("Rebuild Mass (GeV/c^2)");
+            hist->SetTitle("Reconstruct Mass of Muon from Jpsi");
+            hist->GetXaxis()->SetTitle("Reconstruct Mass (GeV/c^2)");
             hist->GetYaxis()->SetTitle("Counts");
             
         },
         [](TCanvas *canvas) {
             canvas->SetCanvasSize(1600, 1000);
         },
-        "rebuild_mass_sig_bkg",
+        "reconstruct_mass_sig_bkg",
         2
     );
     
@@ -31,14 +31,14 @@ void remove_bkg()
         bkg, 100, 0, 50,
         [&]() { return bkg->getMass(); },
         [](TH1D *hist) {
-            hist->SetTitle("Rebuild Mass of Muon from Jpsi");
-            hist->GetXaxis()->SetTitle("Rebuild Mass (GeV/c^2)");
+            hist->SetTitle("Reconsturct Mass of Muon from Jpsi");
+            hist->GetXaxis()->SetTitle("Reconsturct Mass (GeV/c^2)");
             hist->GetYaxis()->SetTitle("Counts");
         },
         [](TCanvas *canvas) {
             canvas->SetCanvasSize(1600, 1000);
         },
-        "rebuild_mass_bkg",
+        "reconstruct_mass_bkg",
         2
     );
 
@@ -56,8 +56,9 @@ void remove_bkg()
     std::cout << "Scale factors: " << scale_factors << std::endl;
 
     sig_bkg_pic->Add(bkg_pic, -scale_factors); // Subtract background from signal
+    sig_bkg_pic->SetStats(0);
     
-    TCanvas *canvas = new TCanvas("canvas", "Rebuild Mass of Muon from Jpsi", 1600, 1000);
+    TCanvas *canvas = new TCanvas("canvas", "Reconstruct Mass of Muon from Jpsi", 1600, 1000);
     sig_bkg_pic->Draw();
     canvas->SetGrid();
     canvas->SaveAs("remove_bkg.png");
