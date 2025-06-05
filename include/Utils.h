@@ -18,6 +18,8 @@ namespace xqy
     8. 画带有误差棒的TGraphErrors
     9. 计算平方根误差
     10. 拟合w_gamma_p和截面
+    11. 获取TH2D中的有效点数量
+    12. 计算动量
     */
     class Utils
     {
@@ -26,7 +28,24 @@ namespace xqy
         static constexpr float epsilon_jpsi = 0.65;
         static constexpr float proton_mass = 0.938272; // GeV
         static constexpr float jpsi_mass = 3.0969;     // GeV
-        static constexpr float psi2s_mass = 3.686097; // GeV
+        static constexpr float psi2s_mass = 3.686097;  // GeV
+
+        static int get_valid_points(TH2D *hist)
+        // 从TH2D中获取有效点的数量
+        // 有效点是指在每个x bin中，y bin有数据的点
+        {
+            int valid_points = 0;
+            for (int i = 1; i <= hist->GetNbinsX(); i++)
+            {
+                TH1D *projY = hist->ProjectionY("_py", i, i);
+                if (projY->GetEntries() > 0)
+                {
+                    valid_points++;
+                }
+            }
+            return valid_points;
+        }
+
         static float calculate_momentum(float px, float py, float pz)
         // 计算粒子的动量
         {

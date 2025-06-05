@@ -9,7 +9,7 @@ public:
     DrawTH2DHelper(BaseManager* manager, TH2D* hist) : BaseDrawGraph2(manager, hist) {}
 
     TH1* fillHistFromManager(std::function<double()> get_x_func,
-                             std::function<double()> get_y_func)
+                             std::function<double()> get_y_func) override
     {
         for (Long64_t i = 0; i < this->manager->getTotalEntries(); i++)
         {
