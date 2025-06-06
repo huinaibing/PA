@@ -4,6 +4,7 @@
 #include "BaseDoubleParticalChannelManager.h"
 #include "Utils.h"
 #include "PPbCollision8_16Config.h"
+#include "PbP1_26Config.h"
 
 class UpcFig7JpsiPbP : public BaseDoubleParticalChannelManager
 {
@@ -31,4 +32,29 @@ protected:
     PPbCollision8_16Config *config = nullptr;
 };
 
+
+class UpcFig7jpsiPbP1_26 :public BaseDoubleParticalChannelManager
+{
+public:
+    UpcFig7jpsiPbP1_26(const char *file_path, const char *partical_name, float partical_mass)
+        : BaseDoubleParticalChannelManager(file_path, partical_name, partical_mass)
+    {
+        this->config = new PbP1_26Config();
+    }
+
+    double getWGammaP()
+    {
+        return xqy::Utils::calculate_w_gamma_p(this->getRebuildMass(),
+                                               this->config->proton_energy,
+                                               this->getMotherParticleRapidity(), -1);
+    }
+
+    double getCrossSection()
+    {
+        return xqy::Utils::calculate_cross_section_supplement_power_law(this->getWGammaP());
+    }
+
+protected:
+    PbP1_26Config *config = nullptr;
+};
 #endif // UPCFIG7_H
