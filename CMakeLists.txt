@@ -16,6 +16,7 @@ set(SOURCES
     src/BaseCSVManager.cpp
     instance/MixEvents.cpp
     config_class/PPbCollision8_16ProtonPositive.cpp
+    config_class/PPbCollision8_16Config.cpp
 )
 
 add_executable(particalDecayAnalysis ${SOURCES})

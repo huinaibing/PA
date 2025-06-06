@@ -82,16 +82,21 @@ void upc_fig5()
     // 就两个点，别开个新类了
     double x1 = 932.5577811596276;
     double x2 = 1999.3610734110384;
+    double er1 = 0.01135;
     double y1 = 0.16512120054179386;
     double y2 = 0.16507791375519917;
+    double er2 = 0.0253;
+
 
     TGraphErrors* paper = new TGraphErrors(jpsi_valid_points < psi2s_valid_points ? jpsi_valid_points : psi2s_valid_points);
     paper->SetPoint(0, x1, y1);
     paper->SetPoint(1, x2, y2);
-    
+    paper->SetPointError(0, 0, er1);
+    paper->SetPointError(1, 0, er2);
 
     TCanvas* canvas = new TCanvas("canvas", "Psi(2S) Ratio to J/psi", 1600, 1000);
     TH1F* frame = new TH1F("frame", "Psi(2S) Ratio to J/psi", 100, 800, 3000);
+    frame->GetYaxis()->SetRangeUser(0.1, 0.25);
     frame->SetStats(0);
     frame->GetYaxis()->SetTitle("Ratio");
     frame->GetXaxis()->SetTitle("W_{#gamma p} (GeV)");

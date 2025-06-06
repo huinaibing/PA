@@ -3,8 +3,9 @@
 // #include "scripts/remove_bkg.cpp"
 // #include "scripts/muonAnalysis.cpp"
 
-#include "scripts/upcFig5.cpp"
+// #include "scripts/upcFig5.cpp"
 #include "TH1.h"
+#include "scripts/upcFig7.cpp"
 
 
 int main()
@@ -14,8 +15,8 @@ int main()
     // muon_analysis();
     //mixevent_muon_analysis();
     //remove_bkg();
-
-    upc_fig5();
+    //upc_fig5();
+    upc_fig_7();
     
 
     return 0;
