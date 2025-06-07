@@ -30,6 +30,21 @@ namespace xqy
         static constexpr float jpsi_mass = 3.0969;     // GeV
         static constexpr float psi2s_mass = 3.686097;  // GeV
 
+        static int get_no_zero_points(TH1D *hist)
+        {
+            // 获取TH1D中非零点的数量
+            // 这里的非零点是指bin内容不为0的点
+            int no_zero_points = 0;
+            for (int i = 1; i <= hist->GetNbinsX(); i++)
+            {
+                if (hist->GetBinContent(i) > 0)
+                {
+                    no_zero_points++;
+                }
+            }
+            return no_zero_points;
+        }
+
         static int get_valid_points(TH2D *hist)
         // 从TH2D中获取有效点的数量
         // 有效点是指在每个x bin中，y bin有数据的点
