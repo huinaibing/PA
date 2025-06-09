@@ -4,8 +4,9 @@
 #include "TGraphErrors.h"
 #include "BaseCSVManager.h"
 #include "TF1.h"
+#include "TLegend.h"
 
-#define JPSI_SLIGHT_PBPB "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/PbPb536slight.out"
+#define JPSI_SLIGHT_PBPB "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/PbPb536slightRight.out"
 #define JPSI_ROOT_PBPB "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out_root/PbPb536slight.root"
 #define JPSI_PAPER_DATA "/home/huinaibing/huinaibing/PA/DATA_FILES/paper_data/UPCfig8data.csv"
 
@@ -28,7 +29,7 @@ void upc_fig_8()
     TGraphErrors* graph = new TGraphErrors(no_zero_points);
 
     double sigma_total = 39; // mb, total cross section for PbPb at 5.36 TeV
-    int N_total_events = 15181677;
+    int N_total_events = 370000;
     double bin_width = rap_his->GetBinWidth(1);
     int point_index = 0;
 
@@ -70,8 +71,11 @@ void upc_fig_8()
     paper_graph->SetMarkerColor(kRed);
     paper_graph->Draw("PA");
     graph->Draw("P SAME");
-    canvas->SaveAs("UPCFIG8/jpsi_rapidity.png");
-
+    TLegend* legend = new TLegend(0.6, 0.7, 0.9, 0.9);
+    legend->AddEntry(graph, "J/psi d#sigma/dy", "P");
+    legend->AddEntry(paper_graph, "Paper data", "P");
+    legend->Draw("SAME");
+    canvas->SaveAs("UPCFIG8/jpsi_rapidity_wrong.png");
     rapidity_dis.savePNG("UPCFIG8/rapidity_dis.png");
 
 }
