@@ -47,6 +47,10 @@ void upc_fig_7()
     wgmp_dis_126.fillHistFromManager(
         [&jpsi126](){return jpsi126.getWGammaP();}
     );
+    wgmp_dis_126.setDrawOption([](TCanvas* canvas) {
+        canvas->SetLogy();
+        canvas->SetGrid();
+    });
     wgmp_dis_126.savePNG("UPCFIG7/wgmp_dis_126.png");
     jpsi_cross_section_graph_126.fillHistFromManager(
         [&jpsi126]() {return jpsi126.getWGammaP(); },
