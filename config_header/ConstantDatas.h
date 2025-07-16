@@ -1,3 +1,14 @@
+/**
+ * @file ConstantDatas.h
+ * @author Qiuyu Xia (you@domain.com)
+ * @brief 本文件已被弃用！！！
+ * @version 0.1
+ * @date 2025-07-16
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #ifndef __CONSTANT_DATAS__
 #define __CONSTANT_DATAS__
 
