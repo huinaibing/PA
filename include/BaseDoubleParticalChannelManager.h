@@ -66,6 +66,10 @@ public:
     float getNegativeParticleEta();
 
     float getRebuildMass();
+
+    double getMotherParticleTheta();
+
+    double getMotherParticlePhi();
 };
 
 #endif

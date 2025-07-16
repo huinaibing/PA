@@ -131,3 +131,20 @@ float BaseDoubleParticalChannelManager::getNegativeParticleEta()
 {
     return xqy::Utils::calculate_eta(this->negative_px, this->negative_py, this->negative_pz);
 }
+
+double BaseDoubleParticalChannelManager::getMotherParticleTheta()
+{
+    return xqy::Utils::calculate_theta(
+        this->negative_px + this->positive_px,
+        this->negative_py + this->positive_py,
+        this->negative_pz + this->positive_pz);
+}
+
+
+double BaseDoubleParticalChannelManager::getMotherParticlePhi()
+{
+    return xqy::Utils::calculate_phi(
+        this->getMotherParticlePx(),
+        this->getMotherParticlePy()
+    );
+}

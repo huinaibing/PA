@@ -159,6 +159,17 @@ namespace xqy
         {
             return TMath::Sqrt(2 * E_proton * mass * TMath::Exp(direction * y));
         }
+
+        static double calculate_theta(double px, double py, double pz)
+        {
+            double pT = xqy::Utils::calculate_pt(px, py);
+            return TMath::ATan(pT / pz);
+        }
+
+        static double calculate_phi(double px, double py)
+        {
+            return TMath::ATan(py / px);
+        }
     };
 }
 
