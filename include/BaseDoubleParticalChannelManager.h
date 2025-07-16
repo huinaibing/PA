@@ -1,3 +1,15 @@
+/**
+ * @file BaseDoubleParticalChannelManager.h
+ * @author your name (you@domain.com)
+ * @brief 管理衰变道是两个粒子的母粒子的衰变产物数据，比如jpsi->ee，管理电子
+ * @version 0.1
+ * @date 2025-07-16
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
+
 #ifndef __BASE_DOUBLE_PARTICAL_CHANNEL_MANAGER__
 #define __BASE_DOUBLE_PARTICAL_CHANNEL_MANAGER__
 

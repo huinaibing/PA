@@ -1,3 +1,14 @@
+/**
+ * @file BaseDrawGraph.h
+ * @author your name (you@domain.com)
+ * @brief 一个大画图类，现在建议使用BaseDrawGraph2
+ * @version 0.1
+ * @date 2025-07-16
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #ifndef __BASE_DRAW_GRAPH__
 #define __BASE_DRAW_GRAPH__
 #include "TH1.h"

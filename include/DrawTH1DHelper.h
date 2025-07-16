@@ -5,10 +5,9 @@
 class DrawTH1DHelper : public BaseDrawGraph2
 {
 public:
-    DrawTH1DHelper(BaseManager* manager, TH1* hist) : BaseDrawGraph2(manager, hist) {}
+    DrawTH1DHelper(BaseManager *manager, TH1 *hist) : BaseDrawGraph2(manager, hist) {}
 
-
-    TH1* fillHistFromManager(std::function<double()> get_data_func) override
+    TH1 *fillHistFromManager(std::function<double()> get_data_func) override
     {
         for (Long64_t i = 0; i < this->manager->getTotalEntries(); i++)
         {
@@ -18,7 +17,6 @@ public:
         }
         return this->hist;
     }
-
 };
 
 #endif // DRAWTH1DHELPER_H

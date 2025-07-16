@@ -1,7 +1,19 @@
+/**
+ * @file BaseConverter2Root.h
+ * @author Autumnrain Summer (you@domain.com)
+ * @brief 本文件针对starlight的一般输出格式设计，只对starlight有用
+ * @version 0.1
+ * @date 2025-07-16
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
+
 #ifndef BASE_CONVERTER_2_ROOT_H
 #define BASE_CONVERTER_2_ROOT_H
 
-// 这个转化是针对STARLIGHT软件设计的
+
 #include "TFile.h"
 #include "TTree.h"
 #include <iostream>
