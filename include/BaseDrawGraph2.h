@@ -66,6 +66,11 @@ public:
     {
         return this->hist;
     }
+
+    void setHist(TH1* hist)
+    {
+        this->hist = hist;
+    }
 };
 
 #endif // BASEDRAWGRAPH2_H

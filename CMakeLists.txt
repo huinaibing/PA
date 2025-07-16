@@ -26,6 +26,7 @@ target_include_directories(particalDecayAnalysis
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/instance_header
         ${PROJECT_SOURCE_DIR}/config_header
+        ${PROJECT_SOURCE_DIR}/external
 )
 
 # 需要root的时候添加
