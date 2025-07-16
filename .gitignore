@@ -4,3 +4,4 @@ DATA_FILE/*
 BUILD/*
 build/*
 scripts/*
+*.json
