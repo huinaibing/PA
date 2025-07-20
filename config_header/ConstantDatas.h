@@ -15,5 +15,6 @@
 
 #define JPSI_PARTICAL_MASS 3.096916 // GeV
 #define ELECTRON_PARTICAL_MASS 0.000511 // GeV
+#define RHO0_PARTICLE_MASS 0.77 // GeV
 
 #endif

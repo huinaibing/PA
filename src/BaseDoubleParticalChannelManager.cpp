@@ -10,7 +10,6 @@ BaseDoubleParticalChannelManager::BaseDoubleParticalChannelManager(
     float partical_mass)
 {
     this->partical_name = partical_name;
-    this->partical_mass = partical_mass;
 
     this->root_file = TFile::Open(file_path);
     this->tree = (TTree *)this->root_file->Get("events");
@@ -72,11 +71,6 @@ Long64_t BaseDoubleParticalChannelManager::getTotalEntries()
     return this->total_entries;
 }
 
-float BaseDoubleParticalChannelManager::getTheoryMass()
-{
-    return this->partical_mass;
-}
-
 float BaseDoubleParticalChannelManager::getMotherParticlePx()
 {
     return this->negative_px + this->positive_px;
@@ -109,14 +103,16 @@ float BaseDoubleParticalChannelManager::getMotherParticleEta()
 
 float BaseDoubleParticalChannelManager::getMotherParticleRapidity()
 {
-    float energy = xqy::Utils::calculate_energy(this->getMotherParticlePx(), this->getMotherParticlePy(), this->getMotherParticlePz(), this->getTheoryMass());
+    float energy = xqy::Utils::calculate_energy(this->getMotherParticlePx(), this->getMotherParticlePy(), this->getMotherParticlePz(), this->getRebuildMass());
     return xqy::Utils::calculate_rapidity(energy, this->getMotherParticlePz());
 }
 
-float BaseDoubleParticalChannelManager::getRebuildMass()
+float BaseDoubleParticalChannelManager::getRebuildMass(
+    double positive_daughter_mass,
+    double negative_daughter_mass)
 {
-    float positive_particle_energy = xqy::Utils::calculate_energy(this->positive_px, this->positive_py, this->positive_pz, ELECTRON_PARTICAL_MASS);
-    float negative_particle_energy = xqy::Utils::calculate_energy(this->negative_px, this->negative_py, this->negative_pz, ELECTRON_PARTICAL_MASS);
+    float positive_particle_energy = xqy::Utils::calculate_energy(this->positive_px, this->positive_py, this->positive_pz, positive_daughter_mass);
+    float negative_particle_energy = xqy::Utils::calculate_energy(this->negative_px, this->negative_py, this->negative_pz, negative_daughter_mass);
     float total_energy = positive_particle_energy + negative_particle_energy;
 
     return TMath::Sqrt(total_energy * total_energy - this->getMotherParticleMomentum() * this->getMotherParticleMomentum());
@@ -140,11 +136,9 @@ double BaseDoubleParticalChannelManager::getMotherParticleTheta()
         this->negative_pz + this->positive_pz);
 }
 
-
 double BaseDoubleParticalChannelManager::getMotherParticlePhi()
 {
     return xqy::Utils::calculate_phi(
         this->getMotherParticlePx(),
-        this->getMotherParticlePy()
-    );
+        this->getMotherParticlePy());
 }

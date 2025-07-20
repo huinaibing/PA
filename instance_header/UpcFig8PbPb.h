@@ -4,7 +4,7 @@
 #include "BaseDoubleParticalChannelManager.h"
 #include "PbPb536Config.h"
 class UpcFig8PbPb : public BaseDoubleParticalChannelManager
-{   
+{
 public:
     PbPb536Config *config = nullptr;
     UpcFig8PbPb(const char *file_path, const char *partical_name, float partical_mass)
@@ -12,14 +12,9 @@ public:
     {
         this->config = new PbPb536Config();
     }
-   
 };
 
-
-
-
 #endif // UPCFIG8PBPB_H
-
 
 // Total cross section: 40.487 mb.
 
