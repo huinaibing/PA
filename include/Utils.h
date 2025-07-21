@@ -4,6 +4,7 @@
 #include "TMath.h"
 #include "TGraphErrors.h"
 #include "TH2D.h"
+#include <string.h>
 
 namespace xqy
 {
@@ -169,6 +170,21 @@ namespace xqy
         static double calculate_phi(double px, double py)
         {
             return TMath::ATan(py / px);
+        }
+
+        /**
+         * @brief 沙比c str 还有沙比root非要用const char *，程序员都该沙了
+         *
+         * @param str1
+         * @param str2
+         * @return const char*
+         */
+        static const char *concatenate_const_char(const char *str1, const char *str2)
+        {
+            std::string temp = std::string(str1) + str2;
+            char *buffer = new char[temp.size() + 1];
+            std::strcpy(buffer, temp.c_str());
+            return buffer; // 调用者必须delete[]
         }
     };
 }
