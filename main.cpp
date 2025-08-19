@@ -40,6 +40,16 @@
 #define INCOHERENT_RHO0_RT "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out_root/PbPb/rho0/PbPb536_rho0_incoherent_065_590.root"
 //=====================================
 
+//-----------------------------------
+//
+// psi2s
+//
+// origin
+#define COHERENT_PSI2S_SL "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/PbPb/psi2s/PbPb536_psi2s_coherent_7700.out"
+#define INCOHERENT_PSI2S_SL "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/PbPb/psi2s/PbPb536_psi2s_incoherent_7000.out"
+// root
+#define COHERENT_PSI2S_RT "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out_root/PbPb/psi2s/PbPb536_psi2s_coherent_7700.root"
+#define INCOHERENT_PSI2S_RT "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out_root/PbPb/psi2s/PbPb536_psi2s_incoherent_7000.root"
 int main()
 {
 
@@ -56,9 +66,11 @@ int main()
 
     compare_coherent_incoherent(COHERENT_RHO0_SL, COHERENT_RHO0_RT,
                                 INCOHERENT_RHO0_SL, INCOHERENT_RHO0_RT,
-                                false, "rho0", 0
+                                false, "rho0", 0);
 
-    );
+    compare_coherent_incoherent(COHERENT_PSI2S_SL, COHERENT_PSI2S_RT,
+                                INCOHERENT_PSI2S_SL, INCOHERENT_PSI2S_RT,
+                                true, "psi2s", 0);
 
     return 0;
 }
