@@ -186,6 +186,18 @@ namespace xqy
             std::strcpy(buffer, temp.c_str());
             return buffer; // 调用者必须delete[]
         }
+
+        static const char* concatenate_const_char(std::vector<const char* > strs)
+        {
+            const char* str_tmp = strs[0];
+
+            for (int i = 1; i < strs.size(); i++)
+            {
+                str_tmp = Utils::concatenate_const_char(str_tmp, strs[i]);
+            }
+
+            return str_tmp;
+        }
     };
 }
 

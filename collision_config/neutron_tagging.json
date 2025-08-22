@@ -1,0 +1,22 @@
+{
+    "0n0n": {
+        "attempts": 11524220,
+        "accepted": 329000,
+        "total_sigma": 30.151,
+        "photoproduction_sigma": 0.0513
+    },
+    
+    "0nxn": {
+        "attempts": 2883351,
+        "accepted": 35000,
+        "total_sigma": 7.435,
+        "photoproduction_sigma": 0.005389
+    },
+
+    "xnxn": {
+        "attempts": 1154805,
+        "accepted": 14000,
+        "total_sigma": 2.9,
+        "photoproduction_sigma": 0.002099
+    }
+}
