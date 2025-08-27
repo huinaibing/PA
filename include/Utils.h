@@ -198,6 +198,29 @@ namespace xqy
 
             return str_tmp;
         }
+
+        /**
+         * @brief Get the photon flux 只能用于AA碰撞 
+         *        公式详情见The Physics of Ultraperipheral Collisions at the LHC中6
+         * 
+         * @param k 光子的波数（就是能量，自然单位），单位为fm-1
+         * @param big_Z 光子源的Z，默认是铅核
+         * @param gamma_L 光子源的lorentz因子，默认参数是5.36TeV的PbPb
+         * @param r_A 光子源的半径，默认参数为7fm-1
+         * @return double 
+         */
+        static double get_photon_flux_AA(double k, int big_Z = 82, int gamma_L = 2857, int r_A = 7)
+        {
+            double omega = 2 * k * r_A / gamma_L;
+            double coef = 2 * big_Z * big_Z * (1/137) / TMath::Pi() / k;
+
+            double first_term = omega * TMath::BesselK0(omega) * TMath::BesselK1(omega);
+            double second_term = omega * omega / 2 * (
+                TMath::BesselK1(omega) * TMath::BesselK1(omega) - TMath::BesselK0(omega) * TMath::BesselK0(omega)
+            );
+
+            return coef * (first_term - second_term);
+        }
     };
 }
 
