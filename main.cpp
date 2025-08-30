@@ -36,85 +36,105 @@
 
 
 
-#include "scripts/drawDsigmaDy.cpp"
-#include "external/nlohmann/json.hpp"
+// #define TEST_PATH "/home/huinaibing/huinaibing/PA/DATA_FILES/test_starlight.out"
+// #define TEST_PATH_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/test_starlight.root"
 
-#include "TGraphErrors.h"
+// #include "UpcFig8PbPb.h"
+// #include "BaseConverter2Root.h"
+// #include "DrawTH1DHelper.h"
+// #include "TGraphErrors.h"
+// #include "BaseCSVManager.h"
+// #include "TF1.h"
+// #include "TLegend.h"
 
-#define JSON_FILE_PATH "/home/huinaibing/huinaibing/PA/collision_config/neutron_tagging.json"
+// int main()
+// {
+//     BaseConverter2Root::convert2rootfile(TEST_PATH, TEST_PATH_ROOT);
+//     UpcFig8PbPb jpsi(TEST_PATH_ROOT, "jpsi_test_photon_energy", 0);
+//     jpsi.classCheck();
 
-#define NEUTRON_TAGGING_0n0n "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging/PbPb536_0n0n.out"
-#define NEUTRON_TAGGING_0n0n_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging_root/PbPb536_0n0n.root"
+// }
 
-#define NEUTRON_TAGGING_0nxn "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging/PbPb536_0nXn.out"
-#define NEUTRON_TAGGING_0nxn_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging_root/PbPb536_0nXn.root"
 
-#define NEUTRON_TAGGING_xnxn "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging/PbPb536_XnXn.out"
-#define NEUTRON_TAGGING_xnxn_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging_root/PbPb536_XnXn.root"
+// #include "scripts/drawDsigmaDy.cpp"
+// #include "external/nlohmann/json.hpp"
 
-int main()
-{
-    nlohmann::json json_data;
-    (std::ifstream(JSON_FILE_PATH)) >> json_data;
+// #include "TGraphErrors.h"
 
-    TF1 *frame = new TF1(
-        "frame",
-        "0", 3, 6);
+// #define JSON_FILE_PATH "/home/huinaibing/huinaibing/PA/collision_config/neutron_tagging.json"
 
-    frame->SetTitle("0n0n, 0nxn, xnxn comparation");
+// #define NEUTRON_TAGGING_0n0n "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging/PbPb536_0n0n.out"
+// #define NEUTRON_TAGGING_0n0n_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging_root/PbPb536_0n0n.root"
 
-    TGraphErrors *graph_0n0n = drawDsigmaDy(
-        NEUTRON_TAGGING_0n0n,
-        NEUTRON_TAGGING_0n0n_ROOT,
-        "0n0n",
-        json_data["0n0n"]["total_sigma"].get<double>(),
-        json_data["0n0n"]["attempts"].get<long long>());
+// #define NEUTRON_TAGGING_0nxn "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging/PbPb536_0nXn.out"
+// #define NEUTRON_TAGGING_0nxn_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging_root/PbPb536_0nXn.root"
 
-    TGraphErrors *graph_0nxn = drawDsigmaDy(
-        NEUTRON_TAGGING_0nxn,
-        NEUTRON_TAGGING_0nxn_ROOT,
-        "0nxn+xn0n",
-        json_data["0nxn"]["total_sigma"].get<double>(),
-        json_data["0nxn"]["attempts"].get<long long>());
+// #define NEUTRON_TAGGING_xnxn "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging/PbPb536_XnXn.out"
+// #define NEUTRON_TAGGING_xnxn_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/pbpb536_coherent_neutron_tagging_root/PbPb536_XnXn.root"
 
-    TGraphErrors *graph_xnxn = drawDsigmaDy(
-        NEUTRON_TAGGING_xnxn,
-        NEUTRON_TAGGING_xnxn_ROOT,
-        "xnxn",
-        json_data["xnxn"]["total_sigma"].get<double>(),
-        json_data["xnxn"]["attempts"].get<long long>());
+// int main()
+// {
+//     nlohmann::json json_data;
+//     (std::ifstream(JSON_FILE_PATH)) >> json_data;
 
-    TCanvas *canvas = new TCanvas(
-        "canvas", "J/psi d#sigma/dy",
-        1600, 1000);
+//     TF1 *frame = new TF1(
+//         "frame",
+//         "0", 3, 6);
 
-    graph_0n0n->SetMarkerColor(kRed);
-    graph_0nxn->SetMarkerColor(kBlue);
-    graph_xnxn->SetMarkerColor(kBlack);
+//     frame->SetTitle("0n0n, 0nxn, xnxn comparation");
 
-    graph_0n0n->SetMarkerStyle(24);
-    graph_0nxn->SetMarkerStyle(8);
-    graph_xnxn->SetMarkerStyle(27);
+//     TGraphErrors *graph_0n0n = drawDsigmaDy(
+//         NEUTRON_TAGGING_0n0n,
+//         NEUTRON_TAGGING_0n0n_ROOT,
+//         "0n0n",
+//         json_data["0n0n"]["total_sigma"].get<double>(),
+//         json_data["0n0n"]["attempts"].get<long long>());
+
+//     TGraphErrors *graph_0nxn = drawDsigmaDy(
+//         NEUTRON_TAGGING_0nxn,
+//         NEUTRON_TAGGING_0nxn_ROOT,
+//         "0nxn+xn0n",
+//         json_data["0nxn"]["total_sigma"].get<double>(),
+//         json_data["0nxn"]["attempts"].get<long long>());
+
+//     TGraphErrors *graph_xnxn = drawDsigmaDy(
+//         NEUTRON_TAGGING_xnxn,
+//         NEUTRON_TAGGING_xnxn_ROOT,
+//         "xnxn",
+//         json_data["xnxn"]["total_sigma"].get<double>(),
+//         json_data["xnxn"]["attempts"].get<long long>());
+
+//     TCanvas *canvas = new TCanvas(
+//         "canvas", "J/psi d#sigma/dy",
+//         1600, 1000);
+
+//     graph_0n0n->SetMarkerColor(kRed);
+//     graph_0nxn->SetMarkerColor(kBlue);
+//     graph_xnxn->SetMarkerColor(kBlack);
+
+//     graph_0n0n->SetMarkerStyle(24);
+//     graph_0nxn->SetMarkerStyle(8);
+//     graph_xnxn->SetMarkerStyle(27);
     
-    frame->SetTitle(" J/psi d#sigma/dy; Rapidity; d#sigma/dy (mb) ");
+//     frame->SetTitle(" J/psi d#sigma/dy; Rapidity; d#sigma/dy (mb) ");
 
-    frame->Draw();
-    graph_0n0n->Draw("P SAME");
-    graph_0nxn->Draw("P SAME");
-    graph_xnxn->Draw("P SAME");
+//     frame->Draw();
+//     graph_0n0n->Draw("P SAME");
+//     graph_0nxn->Draw("P SAME");
+//     graph_xnxn->Draw("P SAME");
 
-    TLegend *legend = new TLegend(0.6, 0.7, 0.9, 0.9);
-    legend->AddEntry(graph_0n0n, "0n0n * 0.42", "P");
-    legend->AddEntry(graph_0nxn, "0nxn+xn0n * 0.42", "P");
-    legend->AddEntry(graph_xnxn, "xnxn * 0.42", "P");
-    legend->Draw("SAME");
+//     TLegend *legend = new TLegend(0.6, 0.7, 0.9, 0.9);
+//     legend->AddEntry(graph_0n0n, "0n0n * 0.42", "P");
+//     legend->AddEntry(graph_0nxn, "0nxn+xn0n * 0.42", "P");
+//     legend->AddEntry(graph_xnxn, "xnxn * 0.42", "P");
+//     legend->Draw("SAME");
 
-    canvas->SetLogy();
+//     canvas->SetLogy();
 
-    canvas->SaveAs("neutron_tagging_coherent/0n0n_0nxn_xnxn_comparation.png");
+//     canvas->SaveAs("neutron_tagging_coherent/0n0n_0nxn_xnxn_comparation.png");
 
-    return 0; // 写C++main函数不return 0的注定会度过一个失败的人生
-}
+//     return 0; // 写C++main函数不return 0的注定会度过一个失败的人生
+// }
 
 // #include "scripts/JpsiProperty.cpp"
 // #include "scripts/mixevent_muon.cpp"
@@ -186,3 +206,11 @@ int main()
 
 //     return 0;
 // }
+
+
+#include "scripts/sigma_wgmPb.cpp"
+
+int main()
+{
+    sigma_wgmPb_main();
+}
