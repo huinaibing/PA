@@ -5,9 +5,9 @@
  * @details 这个数据存储在data[column][entry]中，这个类目前只能读取以空格隔开的csv文件
  * @version 0.1
  * @date 2025-07-16
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
 
 #ifndef BASE_CSV_MANAGER_H
