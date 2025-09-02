@@ -5,6 +5,8 @@
 #include "TGraphErrors.h"
 #include "TH2D.h"
 #include <string.h>
+#include "TCanvas.h"
+#include "TLegend.h"
 
 namespace xqy
 {
@@ -30,6 +32,46 @@ namespace xqy
         static constexpr float proton_mass = 0.938272; // GeV
         static constexpr float jpsi_mass = 3.0969;     // GeV
         static constexpr float psi2s_mass = 3.686097;  // GeV
+
+        /**
+         * @brief 把很多图画在一起， 由于TGraph和TH1不是继承同一个，所以要单独弄
+         * 
+         * @param th1 
+         * @param graph 
+         * @param frame_option 
+         * @param canvas_option 
+         * @param leg_option
+         * @param file_name 
+         */
+        static void save_graphs_together(std::vector<TH1 *> th1,
+                                         std::vector<TGraph *> graph,
+                                         TH1 * frame,
+                                         std::function<void(TCanvas *)> canvas_option,
+                                         std::function<void(TLegend*)> leg_option,
+                                         const char *file_name)
+        {
+            TLegend* leg = new TLegend();
+            TCanvas *cvs = new TCanvas();
+            canvas_option(cvs);
+            leg_option(leg);
+            frame->SetStats(0);
+            frame->Draw();
+
+            for (auto i : th1)
+            {
+                leg->AddEntry(i);
+                i->Draw("P SAME");
+            }
+
+            for (auto i : graph)
+            {
+                leg->AddEntry(i);
+                i->Draw("P SAME");
+            }
+            leg->Draw("SAME");
+
+            cvs->SaveAs(file_name);
+        }
 
         static int get_no_zero_points(TH1D *hist)
         {
@@ -187,9 +229,9 @@ namespace xqy
             return buffer; // 调用者必须delete[]
         }
 
-        static const char* concatenate_const_char(std::vector<const char* > strs)
+        static const char *concatenate_const_char(std::vector<const char *> strs)
         {
-            const char* str_tmp = strs[0];
+            const char *str_tmp = strs[0];
 
             for (int i = 1; i < strs.size(); i++)
             {
@@ -200,24 +242,22 @@ namespace xqy
         }
 
         /**
-         * @brief Get the photon flux 只能用于AA碰撞 
+         * @brief Get the photon flux 只能用于AA碰撞
          *        公式详情见The Physics of Ultraperipheral Collisions at the LHC中6
-         * 
+         *
          * @param k 光子的波数（就是能量，自然单位），单位为fm-1
          * @param big_Z 光子源的Z，默认是铅核
          * @param gamma_L 光子源的lorentz因子，默认参数是5.36TeV的PbPb
          * @param r_A 光子源的半径，默认参数为7fm-1
-         * @return double 
+         * @return double
          */
         static double get_photon_flux_AA(double k, int big_Z = 82, int gamma_L = 2857, int r_A = 7)
         {
             double omega = 2 * k * r_A / gamma_L;
-            double coef = 2 * big_Z * big_Z * (1/137) / TMath::Pi() / k;
+            double coef = 2 * big_Z * big_Z * (1 / 137) / TMath::Pi() / k;
 
             double first_term = omega * TMath::BesselK0(omega) * TMath::BesselK1(omega);
-            double second_term = omega * omega / 2 * (
-                TMath::BesselK1(omega) * TMath::BesselK1(omega) - TMath::BesselK0(omega) * TMath::BesselK0(omega)
-            );
+            double second_term = omega * omega / 2 * (TMath::BesselK1(omega) * TMath::BesselK1(omega) - TMath::BesselK0(omega) * TMath::BesselK0(omega));
 
             return coef * (first_term - second_term);
         }
