@@ -3,7 +3,7 @@
  * @brief 你的main函数快堆成依托答辩了，写的什么玩意
  *        别往main函数堆分析代码！！！别往main函数堆分析代码！！！别往main函数堆分析代码！！！
  *
- * 
+ *
  *                       _oo0oo_
  *                      o8888888o
  *                      88" . "88
@@ -30,11 +30,16 @@
  *
  *
  *
- * 
+ *
  * @section 用法：在scripts里面写主体分析代码，在这里调用，然后cmake
  */
 
+#include "scripts/sigma_wgmPb.cpp"
 
+int main()
+{
+    sigma_wgmPb_main();
+}
 
 // #define TEST_PATH "/home/huinaibing/huinaibing/PA/DATA_FILES/test_starlight.out"
 // #define TEST_PATH_ROOT "/home/huinaibing/huinaibing/PA/DATA_FILES/test_starlight.root"
@@ -54,7 +59,6 @@
 //     jpsi.classCheck();
 
 // }
-
 
 // #include "scripts/drawDsigmaDy.cpp"
 // #include "external/nlohmann/json.hpp"
@@ -115,7 +119,7 @@
 //     graph_0n0n->SetMarkerStyle(24);
 //     graph_0nxn->SetMarkerStyle(8);
 //     graph_xnxn->SetMarkerStyle(27);
-    
+
 //     frame->SetTitle(" J/psi d#sigma/dy; Rapidity; d#sigma/dy (mb) ");
 
 //     frame->Draw();
@@ -206,11 +210,3 @@
 
 //     return 0;
 // }
-
-
-#include "scripts/sigma_wgmPb.cpp"
-
-int main()
-{
-    sigma_wgmPb_main();
-}
