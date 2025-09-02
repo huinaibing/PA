@@ -14,6 +14,8 @@ set(SOURCES
     src/BaseDrawGraph.cpp
     src/BaseDoubleParticalChannelManager.cpp
     src/BaseCSVManager.cpp
+    src/DrawTH2DHelper.cpp
+    src/DrawTGraphErrorHelper.cpp
     instance/MixEvents.cpp
     config_class/PPbCollision8_16ProtonPositive.cpp
     config_class/PPbCollision8_16Config.cpp
