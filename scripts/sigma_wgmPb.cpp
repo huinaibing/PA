@@ -1,3 +1,14 @@
+/**
+ * @file sigma_wgmPb.cpp
+ * @author your name (you@domain.com)
+ * @brief 画sigma(gmPb)和WgmPb的图的
+ * @version 0.1
+ * @date 2025-09-03
+ *
+ * @copyright Copyright (c) 2025
+ *
+ */
+
 #include "BaseCSVManager.h"
 #include "Utils.h"
 #include "DrawTGraphErrorHelper.h"
@@ -5,7 +16,8 @@
 TGraphErrors *sigma_wgmPb(const char *csv_file_path,
                           const char *particle_name,
                           const char *save_file_name,
-                          std::function<void(TGraphErrors *)> graph_option)
+                          std::function<void(TGraphErrors *)> graph_option,
+                          double lumi)
 {
     BaseCSVManager *csv_manager = new BaseCSVManager(csv_file_path, particle_name, 10);
 
@@ -44,27 +56,26 @@ TGraphErrors *sigma_wgmPb(const char *csv_file_path,
     return sigma_wgmPb_TGraphErrors->getTGraphError();
 }
 
+/**
+ * @brief 入口函数
+ *
+ */
 void sigma_wgmPb_main()
 {
-    TGraphErrors *coherent_jpsi_536 = sigma_wgmPb("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/coherent_pbpb_536/jpsi/PbPb536_jpsi_coherent.txt",
-                                                  "jpsi",
-                                                  "neutron_tagging/PbPb536/PbPb536_coherent_jpsi_sigma_wgmPb.png",
-                                                  [](TGraphErrors *graph)
-                                                  { graph->SetTitle("coherent jpsi production at PbPb #sqrt{S_NN} = 5.36 TeV, 7nb^{-1}"); });
+    TGraphErrors *coherent_jpsi_536 = sigma_wgmPb("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/coherent_pbpb_536/jpsi/PbPb536_jpsi_coherent.txt", "jpsi", "neutron_tagging/PbPb536/PbPb536_coherent_jpsi_sigma_wgmPb.png", [](TGraphErrors *graph)
+                                                  { graph->SetTitle("coherent jpsi production at PbPb #sqrt{S_{NN}} = 5.36 TeV, 7nb^{-1}"); }, 7);
 
-    TGraphErrors *incoherent_jpsi_536 = sigma_wgmPb("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/incoherent_pbpb_536/jpsi/PbPb536_jpsi_incoherent.txt",
-                                                    "jpsi",
-                                                    "neutron_tagging/PbPb536/PbPb536_incoherent_jpsi_sigma_wgmPb.png",
-                                                    [](TGraphErrors *graph)
-                                                    { graph->SetTitle("incoherent jpsi production at PbPb #sqrt{S_NN} = 5.36 TeV, 7nb^{-1}"); });
+    TGraphErrors *incoherent_jpsi_536 = sigma_wgmPb("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/incoherent_pbpb_536/jpsi/PbPb536_jpsi_incoherent.txt", "jpsi", "neutron_tagging/PbPb536/PbPb536_incoherent_jpsi_sigma_wgmPb.png", [](TGraphErrors *graph)
+                                                    { graph->SetTitle("incoherent jpsi production at PbPb #sqrt{S_{NN}} = 5.36 TeV, 7nb^{-1}"); }, 7);
 
-    BaseCSVManager* paper_csv = new BaseCSVManager("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/coherent_pbpb_536/jpsi/paper_data.csv", "jpsi", 2);
-    DrawTGraphErrorHelper* paper_graph = new DrawTGraphErrorHelper(paper_csv, new TGraphErrors());
+    BaseCSVManager *paper_csv = new BaseCSVManager("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/coherent_pbpb_536/jpsi/paper_data.csv", "jpsi", 2);
+    DrawTGraphErrorHelper *paper_graph = new DrawTGraphErrorHelper(paper_csv, new TGraphErrors());
 
-    TGraphErrors* paper_graph_filled = paper_graph->fillTGraphErrorFromManager(
-        [&paper_csv](){return paper_csv->getDataByColumn(0);},
-        [&paper_csv](){return paper_csv->getDataByColumn(1);}
-    );
+    TGraphErrors *paper_graph_filled = paper_graph->fillTGraphErrorFromManager(
+        [&paper_csv]()
+        { return paper_csv->getDataByColumn(0); },
+        [&paper_csv]()
+        { return paper_csv->getDataByColumn(1); });
 
     paper_graph_filled->SetMarkerStyle(22);
     paper_graph_filled->SetMarkerSize(2);
@@ -74,10 +85,10 @@ void sigma_wgmPb_main()
     coherent_jpsi_536->SetMarkerColor(kBlue);
     incoherent_jpsi_536->SetTitle("incoherent");
     incoherent_jpsi_536->SetMarkerColor(kRed);
-    TH2D* frame = new TH2D("frame", "jpsi production at PbPb #sqrt{S_{NN}} = 5.36 TeV, 7nb^{-1}", 1000, 0, 3000, 100000, 0, 1);
+    TH2D *frame = new TH2D("frame", "jpsi production at PbPb #sqrt{S_{NN}} = 5.36 TeV, 7nb^{-1}", 1000, 0, 3000, 100000, 0, 1);
     frame->SetXTitle("W_{#gamma Pb} (GeV)");
     frame->SetYTitle("#sigma(#gammaPb)");
-    
+
     xqy::Utils::save_graphs_together(
         *(new std::vector<TH1 *>{}),
         *(new std::vector<TGraph *>{coherent_jpsi_536, incoherent_jpsi_536, paper_graph_filled}),
@@ -87,4 +98,25 @@ void sigma_wgmPb_main()
         [](TLegend *leg)
         {leg->SetX1(0.3);leg->SetY1(0.7);leg->SetX2(0.5);leg->SetY2(0.9); },
         "neutron_tagging/PbPb536/coherent_incoherent_compare_jpsi_sigma_wgmPb.png");
+
+    TGraphErrors *coherent_jpsi_552 = sigma_wgmPb("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/coherent_pbpb_552/jpsi/PbPb552_jpsi_coherent.txt", "jpsi", "neutron_tagging/PbPb552/PbPb552_coherent_jpsi_sigma_wgmPb.png", [](TGraphErrors *graph)
+                                                  { graph->SetTitle("coherent jpsi production at PbPb #sqrt{S_{NN}} = 5.52 TeV, 33.6nb^{-1}"); }, 33.6);
+
+    TH2D *frame_cmp = new TH2D("frame_cmp", "jpsi production at PbPb #sqrt{S_{NN}} = 5.36 TeV and 5.52 TeV comparation", 1000, 0, 3000, 100000, 0, 1);
+    frame_cmp->SetXTitle("W_{#gamma Pb} (GeV)");
+    frame_cmp->SetYTitle("#sigma(#gammaPb)");
+
+    coherent_jpsi_552->SetTitle("5.52TeV");
+    coherent_jpsi_536->SetTitle("5.36TeV");
+    coherent_jpsi_552->SetMarkerColor(kRed);
+
+    xqy::Utils::save_graphs_together(
+        *(new std::vector<TH1 *>{}),
+        *(new std::vector<TGraph *>{coherent_jpsi_536, coherent_jpsi_552}),
+        frame_cmp,
+        [](TCanvas *cvs)
+        {cvs->SetCanvasSize(1600, 1000); cvs->SetLogx();cvs->SetLogy(); },
+        [](TLegend *leg)
+        {leg->SetX1(0.3);leg->SetY1(0.7);leg->SetX2(0.5);leg->SetY2(0.9); },
+        "neutron_tagging/different_snn_compare_jpsi_sigma_wgmPb.png");
 }

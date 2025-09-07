@@ -22,12 +22,13 @@ class BaseCSVManager : public BaseManager
 {
 public:
     BaseCSVManager(const char *file_path, const char *partical_name, int column_num);
+    BaseCSVManager() {};
     std::string getParticalName() override;
     Long64_t getTotalEntries() override;
     void setCurrentEntry(Long64_t entry) override;
     float getDataByColumn(int column);
 
-private:
+protected:
     std::string partical_name;
     int column_num;
     std::vector<std::vector<float>> data;

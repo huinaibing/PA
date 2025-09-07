@@ -154,6 +154,11 @@ public:
     {
         this->hist = hist;
     }
+
+    virtual void setManager(BaseManager* manager)
+    {
+        this->manager = manager;
+    }
 };
 
 #endif // BASEDRAWGRAPH2_H

@@ -9,6 +9,29 @@ find_package(ROOT REQUIRED COMPONENTS Core Tree RIO Net Hist MathCore Graf)
 include(${ROOT_USE_FILE})
 # end
 
+# 1. 查找 MySQL 头文件目录（包含 mysql/mysql.h）
+find_path(MYSQL_INCLUDE_DIR
+    NAMES mysql/mysql.h
+    PATHS /usr/include/mysql /usr/local/include/mysql  # 默认安装路径
+)
+
+# 2. 查找 MySQL 链接库（libmysqlclient.so）
+find_library(MYSQL_LIBRARY
+    NAMES mysqlclient
+    PATHS /usr/lib/x86_64-linux-gnu /usr/local/lib  # Ubuntu 下的默认库路径
+)
+
+# 3. 添加头文件路径（让编译器能找到 mysql.h）
+include_directories(${MYSQL_INCLUDE_DIR})
+
+# 检查是否找到 MySQL 头文件和库
+if(NOT MYSQL_INCLUDE_DIR)
+    message(FATAL_ERROR "MySQL 头文件未找到，请安装 libmysqlclient-dev")
+endif()
+if(NOT MYSQL_LIBRARY)
+    message(FATAL_ERROR "MySQL 库文件未找到，请安装 libmysqlclient-dev")
+endif()
+
 set(SOURCES
     main.cpp
     src/BaseDrawGraph.cpp
@@ -16,6 +39,7 @@ set(SOURCES
     src/BaseCSVManager.cpp
     src/DrawTH2DHelper.cpp
     src/DrawTGraphErrorHelper.cpp
+    src/DataBaseManager.cpp
     instance/MixEvents.cpp
     config_class/PPbCollision8_16ProtonPositive.cpp
     config_class/PPbCollision8_16Config.cpp
@@ -42,5 +66,6 @@ target_link_libraries(particalDecayAnalysis
         ROOT::MathCore
         ROOT::Graf
         ROOT::Gpad
+        ${MYSQL_LIBRARY}
 )
 # end
