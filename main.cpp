@@ -1,7 +1,6 @@
 /**
  * @mainpage particle analysis
- * @brief 你的main函数快堆成依托答辩了，写的什么玩意
- *        别往main函数堆分析代码！！！别往main函数堆分析代码！！！别往main函数堆分析代码！！！
+ * @brief 别往main函数堆分析代码！！！别往main函数堆分析代码！！！别往main函数堆分析代码！！！
  *
  *
  *                       _oo0oo_
@@ -34,11 +33,14 @@
  * @section 用法：在scripts里面写主体分析代码，在这里调用，然后cmake
  */
 
-#include <mysql/mysql.h>
-#include "DataBaseManager.h"
-#include "scripts/sigma_wgmpb_2.cpp"
+#include "AllInOne.h"
+
+
+#include "scripts/sigma_wgmpb_3.cpp"
 
 int main()
 {
-    query_data_fill_graph();
+    sigma_wgmpb_3_main();
+
+    return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }

@@ -10,20 +10,6 @@
 
 namespace xqy
 {
-    /*包含以下要素 直接使用以下函数就行了不要自己写了
-    1. 计算粒子的快度
-    2. 计算粒子的伪快度
-    3. 计算粒子的能量
-    4. 计算粒子的横动量pt
-    5. 计算质心系的快度
-    6. 计算Wgammap
-    7. 计算J/psi, psi', upsilon的截面
-    8. 画带有误差棒的TGraphErrors
-    9. 计算平方根误差
-    10. 拟合w_gamma_p和截面
-    11. 获取TH2D中的有效点数量
-    12. 计算动量
-    */
     class Utils
     {
     public:
@@ -34,23 +20,37 @@ namespace xqy
         static constexpr float psi2s_mass = 3.686097;  // GeV
 
         /**
-         * @brief 把很多图画在一起， 由于TGraph和TH1不是继承同一个，所以要单独弄
+         * @brief 四舍五入
          * 
-         * @param th1 
-         * @param graph 
-         * @param frame_option 
-         * @param canvas_option 
+         * @param value 传入的值
+         * @param decimal_places 保留几位有效数字
+         * @example round_to_decimal(8.955, 2); 结果: 8.96 
+         * @return double 
+         */
+        static double round_to_decimal(double value, int decimal_places)
+        {
+            double scale = pow(10.0, decimal_places); // 计算缩放比例（10^n）
+            return round(value * scale) / scale;      // 缩放后四舍五入，再还原
+        }
+
+        /**
+         * @brief 把很多图画在一起， 由于TGraph和TH1不是继承同一个，所以要单独弄
+         *
+         * @param th1
+         * @param graph
+         * @param frame_option
+         * @param canvas_option
          * @param leg_option
-         * @param file_name 
+         * @param file_name
          */
         static void save_graphs_together(std::vector<TH1 *> th1,
                                          std::vector<TGraph *> graph,
-                                         TH1 * frame,
+                                         TH1 *frame,
                                          std::function<void(TCanvas *)> canvas_option,
-                                         std::function<void(TLegend*)> leg_option,
+                                         std::function<void(TLegend *)> leg_option,
                                          const char *file_name)
         {
-            TLegend* leg = new TLegend();
+            TLegend *leg = new TLegend();
             TCanvas *cvs = new TCanvas();
             canvas_option(cvs);
             leg_option(leg);

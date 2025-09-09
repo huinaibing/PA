@@ -93,8 +93,7 @@ void query_data_fill_graph()
                     INNER JOIN jpsi5360nxn c ON a.id = c.id
                     INNER JOIN jpsi536xnxn d ON a.id = d.id
                     WHERE  
-                        a.y BETWEEN 3.4 AND 5.8
-                        AND (b.dsig1_dy * 0.09 * 7000000) > 80
+                        (b.dsig1_dy * 0.09 * 7000000) > 80
                         AND (c.dsig1_dy * 0.09 * 7000000) > 80
                         AND (d.dsig1_dy * 0.09 * 7000000) > 80;
     )";
@@ -119,8 +118,7 @@ void query_data_fill_graph()
                     INNER JOIN jpsi5360nxn c ON a.id = c.id
                     INNER JOIN jpsi536xnxn d ON a.id = d.id
                     WHERE  
-                        a.y BETWEEN 3.4 AND 5.8
-                        AND (b.dsig2_dy * 0.09 * 7000000) > 80
+                        (b.dsig2_dy * 0.09 * 7000000) > 80 
                         AND (c.dsig2_dy * 0.09 * 7000000) > 80
                         AND (d.dsig2_dy * 0.09 * 7000000) > 80;
     )";

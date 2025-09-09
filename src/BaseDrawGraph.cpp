@@ -6,6 +6,7 @@
 #include "TFile.h"
 #include "TCanvas.h"
 #include "TH1.h"
+#include "TH1D.h"
 #include "TH2.h"
 #include "TGraphErrors.h"
 
@@ -17,7 +18,23 @@ BaseDrawGraph::~BaseDrawGraph()
 {
 }
 
-
+/**
+ * @brief 简易画图函数，只能画TH1的一维直方图
+ * 
+ * @param manager 数据来源的manager
+ * @param bin_num 分bin数量
+ * @param min 横坐标的最小值
+ * @param max 最大值
+ * @param get_data_func 数据获取函数，用manager里面的数据，因为迭代需要更改manager的entry指针（之后会考虑把manager做成可迭代类型）
+ * @param draw_option 画图参数，用于修改TH1D
+ * @param canvas_option 画布canvas参数，通常会设置个size，加个logx、logy之类的
+ * @param graph_name 图片名字
+ * @param option option 0：输出文件（root和png）不会创建目录
+ *               option 1：输出到指定目录（root和png都有）
+ *               option 2：直接返回hist
+ * @param output_dir 若option为1,则会输出到该目录
+ * @return TH1D* 
+ */
 TH1D *BaseDrawGraph::drawFromManager(BaseManager *manager,
                                      int bin_num, float min, float max,
                                      std::function<double()> get_data_func,
