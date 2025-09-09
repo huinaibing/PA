@@ -43,6 +43,12 @@ public:
     BaseDoubleParticalChannelManager(const char *file_path,
                                      const char *partical_name,
                                      float partical_mass);
+
+    BaseDoubleParticalChannelManager(const char *file_path,
+                                     const char *partical_name) : BaseDoubleParticalChannelManager(file_path, partical_name, 0)
+    {
+    }
+
     ~BaseDoubleParticalChannelManager();
 
     void classCheck();
