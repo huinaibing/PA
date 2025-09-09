@@ -84,18 +84,23 @@ void sigma_wgmpb_insert_data()
 
 void query_data_fill_graph()
 {
-    string sql = R"(SELECT 
-                        a.wgp1, 
-                        a.sigma2_gamA 
-                    FROM 
-                        jpsi536all a
-                    INNER JOIN jpsi5360n0n b ON a.id = b.id
-                    INNER JOIN jpsi5360nxn c ON a.id = c.id
-                    INNER JOIN jpsi536xnxn d ON a.id = d.id
-                    WHERE  
-                        (b.dsig1_dy * 0.09 * 7000000) > 80
-                        AND (c.dsig1_dy * 0.09 * 7000000) > 80
-                        AND (d.dsig1_dy * 0.09 * 7000000) > 80;
+    string sql = R"(select 
+    a.wgp1,
+    a.sigma2_gamA,
+    a.wgp2,
+    a.sigma1_gamA
+FROM
+    jpsi536all a
+    INNER join 
+        jpsi5360n0n_cut_eta_y_bincontent b on a.y = b.y
+    INNER JOIN
+        jpsi5360nxn_cut_eta_y_bincontent c ON a.y = c.y
+    INNER join
+        jpsi536xnxn_cut_eta_y_bincontent d on a.y = d.y
+WHERE
+    (b.bincontent) > 80
+    AND (c.bincontent) > 80
+    and (d.bincontent) > 80;
     )";
     BaseDataBaseReader* db_reader = new BaseDataBaseReader(sql, "pbpb536jpsicoherent");
 
@@ -109,26 +114,10 @@ void query_data_fill_graph()
         [&db_reader](){return db_reader->getDataByColumn(1);}
     );
 
-    string sql2 = R"(SELECT 
-                        a.wgp2, 
-                        a.sigma1_gamA 
-                    FROM 
-                        jpsi536all a
-                    INNER JOIN jpsi5360n0n b ON a.id = b.id
-                    INNER JOIN jpsi5360nxn c ON a.id = c.id
-                    INNER JOIN jpsi536xnxn d ON a.id = d.id
-                    WHERE  
-                        (b.dsig2_dy * 0.09 * 7000000) > 80 
-                        AND (c.dsig2_dy * 0.09 * 7000000) > 80
-                        AND (d.dsig2_dy * 0.09 * 7000000) > 80;
-    )";
-
-    BaseDataBaseReader* db_reader2 = new BaseDataBaseReader(sql2, "pbpb536jpsicoherent");
-    sigma_wgmPb_TGraphErrors->setManager(db_reader2);
 
     TGraphErrors* res_graph = sigma_wgmPb_TGraphErrors->fillTGraphErrorFromManager(
-        [&db_reader2](){return db_reader2->getDataByColumn(0);},
-        [&db_reader2](){return db_reader2->getDataByColumn(1);}
+        [&db_reader](){return db_reader->getDataByColumn(2);},
+        [&db_reader](){return db_reader->getDataByColumn(3);}
     );
 
     BaseCSVManager *paper_csv = new BaseCSVManager("/home/huinaibing/huinaibing/PA/DATA_FILES/csv_data/coherent_pbpb_536/jpsi/paper_data.csv", "jpsi", 2);
@@ -145,8 +134,8 @@ void query_data_fill_graph()
     res_paper_graph->SetMarkerSize(2);
     res_paper_graph->SetTitle("paper");
     res_paper_graph->SetMarkerColor(kBlue);
-    res_graph->SetMarkerStyle(22);
-    res_graph->SetMarkerSize(2);
+    res_graph->SetMarkerStyle(20);
+    res_graph->SetMarkerSize(1);
     res_graph->SetTitle("coherent");
     res_graph->SetMarkerColor(kRed);
 

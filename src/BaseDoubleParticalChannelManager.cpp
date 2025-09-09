@@ -30,6 +30,9 @@ BaseDoubleParticalChannelManager::~BaseDoubleParticalChannelManager()
 
 void BaseDoubleParticalChannelManager::classCheck()
 {
+    BaseDrawGraph::drawFromManager(this, 240, 0, 10, [this]()
+                                   { return TMath::Abs(this->getNegativeParticleEta() - this->getPositiveParticleEta()); }, "delta_eta", "classCheckOutput");
+
     // draw momentum
     BaseDrawGraph::drawFromManager(this, 100, 0, 1000, [this]()
                                    { return this->getMotherParticleMomentum(); }, "momentum", "classCheckOutput");

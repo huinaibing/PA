@@ -24,6 +24,17 @@ void convert_data2root()
     BaseConverter2Root::convert2rootfile(JPSI_XNXN, ROOT_JPSI_XNXN);
 }
 
+void check_electron()
+{
+    BaseDoubleParticalChannelManager* jpsi_0n0n = new BaseDoubleParticalChannelManager(ROOT_JPSI_0N0N, "jpsi_0n0n");
+    BaseDoubleParticalChannelManager* jpsi_0nxn = new BaseDoubleParticalChannelManager(ROOT_JPSI_0NXN, "jpsi_0nxn");
+    BaseDoubleParticalChannelManager* jpsi_xnxn = new BaseDoubleParticalChannelManager(ROOT_JPSI_XNXN, "jpsi_xnxn");
+
+    jpsi_0n0n->classCheck();
+    jpsi_0nxn->classCheck();
+    jpsi_xnxn->classCheck();
+}
+
 void insert_sql()
 {
     BaseDoubleParticalChannelManager* jpsi_0n0n = new BaseDoubleParticalChannelManager(ROOT_JPSI_0N0N, "jpsi");
