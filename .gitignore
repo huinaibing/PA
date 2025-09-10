@@ -3,4 +3,4 @@ DATA_FILE/*
 .vscode/*
 BUILD/*
 build/*
-
+**/__pycache__/*

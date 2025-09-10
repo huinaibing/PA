@@ -98,9 +98,9 @@ FROM
     INNER join
         jpsi536xnxn_cut_eta_y_bincontent d on a.y = d.y
 WHERE
-    (b.bincontent) > 80
-    AND (c.bincontent) > 80
-    and (d.bincontent) > 80;
+    (b.bincontent * 0.42 * 0.6) > 80
+    AND (c.bincontent * 0.42 * 0.6) > 80
+    and (d.bincontent * 0.42 * 0.6) > 80;
     )";
     BaseDataBaseReader* db_reader = new BaseDataBaseReader(sql, "pbpb536jpsicoherent");
 

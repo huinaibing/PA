@@ -36,13 +36,12 @@
 #include "AllInOne.h"
 
 
-#include "scripts/sigma_wgmpb_2.cpp"
-//#include "scripts/sigma_wgmpb_3.cpp"
+#include "scripts/storeData2SQL.cpp"
 
 int main()
 {
-    query_data_fill_graph();
-    // check_electron();
+    store_data2sql_main();
+    
 
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }
