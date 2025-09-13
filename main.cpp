@@ -36,11 +36,12 @@
 #include "AllInOne.h"
 
 
-#include "scripts/storeData2SQL.cpp"
+#include "scripts/sigma_wgmpb_all_in_one.cpp"
+//#include "scripts/sigma_wgmpb_2.cpp"
 
 int main()
 {
-    store_data2sql_main();
+    
     
 
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生

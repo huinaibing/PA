@@ -166,6 +166,78 @@ void insert_data_print_vm(
     db->dataInsertor(jpsi, table_name);
 }
 
+TGraphErrors* draw_graph(
+    BaseDataBaseReader* db_reader,
+    const char* graph_title,
+    const char* save_file_name
+) 
+{
+    DrawTGraphErrorHelper *sigma_wgmPb_TGraphErrors = new DrawTGraphErrorHelper(
+        db_reader,
+        new TGraphErrors()
+    );
+
+    sigma_wgmPb_TGraphErrors->fillTGraphErrorFromManager(
+        [&db_reader](){return db_reader->getDataByColumn(0);},
+        [&db_reader](){return db_reader->getDataByColumn(1);}
+    );
+
+
+    TGraphErrors* res_graph = sigma_wgmPb_TGraphErrors->fillTGraphErrorFromManager(
+        [&db_reader](){return db_reader->getDataByColumn(2);},
+        [&db_reader](){return db_reader->getDataByColumn(3);}
+    );
+
+    res_graph->SetMarkerStyle(20);
+    res_graph->SetMarkerSize(1);
+    res_graph->SetTitle("coherent");
+    res_graph->SetMarkerColor(kRed);
+
+    TH2D *frame = new TH2D("frame", graph_title, 1000, 0, 3000, 100000, 0, 1);
+    frame->SetXTitle("W_{#gamma Pb} (GeV)");
+    frame->SetYTitle("#sigma(#gammaPb)");
+
+    xqy::Utils::save_graphs_together(
+        *(new std::vector<TH1 *>{}),
+        *(new std::vector<TGraph *>{res_graph}),
+        frame,
+        [](TCanvas *cvs)
+        {cvs->SetCanvasSize(1600, 1000); cvs->SetLogx();cvs->SetLogy(); },
+        [](TLegend *leg)
+        {leg->SetX1(0.3);leg->SetY1(0.7);leg->SetX2(0.5);leg->SetY2(0.9); },
+        save_file_name);
+    
+    return res_graph; 
+}
+
+TGraphErrors* draw_psi2s_536()
+{
+    string sql_536_psi2s = R"(select 
+                                a.wgp1,
+                                a.sigma2_gamA,
+                                a.wgp2,
+                                a.sigma1_gamA
+                            FROM
+                                psi2sall a
+                                INNER join 
+                                    psi2s_0n0n_cut_eta_y_bincontent b on a.y = b.y
+                                INNER JOIN
+                                    psi2s_0nxn_cut_eta_y_bincontent c ON a.y = c.y
+                            WHERE
+                                (b.bincontent) > 80
+                                AND (c.bincontent) > 80;
+                                
+    )";
+    BaseDataBaseReader* psi2s_536_dbreader = new BaseDataBaseReader(
+        sql_536_psi2s, "pbpb536psi2scoherent"
+    );
+    return draw_graph(
+        psi2s_536_dbreader, 
+        "#Psi(2S) production at PbPb 5.36TeV",
+        "/home/huinaibing/huinaibing/PA/BUILD/neutron_tagging/psi2s/536/Psi(2S)_coherent_536.png"
+    );
+}
+
 
 /**
  * @details 
@@ -197,5 +269,6 @@ void insert_data_print_vm(
  */
 void sigma_wgmpb_allinone_main()
 {
-
+    
+    
 }
