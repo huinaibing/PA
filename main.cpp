@@ -42,7 +42,7 @@
 int main()
 {
     
-    
+    sigma_wgmpb_allinone_main();
 
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }

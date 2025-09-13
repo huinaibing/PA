@@ -238,6 +238,36 @@ TGraphErrors* draw_psi2s_536()
     );
 }
 
+TGraphErrors* draw_psi2s_552()
+{
+    string sql_552_psi2s = R"(select 
+                                a.wgp1,
+                                a.sigma2_gamA,
+                                a.wgp2,
+                                a.sigma1_gamA
+                            FROM
+                                psi2sall a
+                                INNER join 
+                                    psi2s_0n0n_cut_eta_y_bincontent b on a.y = b.y
+                                INNER JOIN
+                                    psi2s_0nxn_cut_eta_y_bincontent c ON a.y = c.y
+                                INNER JOIN
+                                    psi2s_xnxn_cut_eta_y_bincontent d ON a.y = d.y
+                            WHERE
+                                (b.bincontent) > 80
+                                AND (c.bincontent) > 80
+                                and (d.bincontent) > 80;
+                                
+    )";
+    BaseDataBaseReader* psi2s_552_dbreader = new BaseDataBaseReader(
+        sql_552_psi2s, "pbpb552psi2scoherent"
+    );
+    return draw_graph(
+        psi2s_552_dbreader, 
+        "#Psi(2S) production at PbPb 5.52TeV",
+        "/home/huinaibing/huinaibing/PA/BUILD/neutron_tagging/psi2s/552/Psi(2S)_coherent_552.png"
+    );
+}
 
 /**
  * @details 
@@ -270,5 +300,5 @@ TGraphErrors* draw_psi2s_536()
 void sigma_wgmpb_allinone_main()
 {
     
-    
+    draw_psi2s_552();
 }
