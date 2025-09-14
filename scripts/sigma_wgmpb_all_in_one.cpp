@@ -193,7 +193,7 @@ TGraphErrors* draw_graph(
     res_graph->SetTitle("coherent");
     res_graph->SetMarkerColor(kRed);
 
-    TH2D *frame = new TH2D("frame", graph_title, 1000, 0, 3000, 100000, 0, 1);
+    TH2D *frame = new TH2D("frame", graph_title, 1000, 0, 3000, 100000, 0, 10);
     frame->SetXTitle("W_{#gamma Pb} (GeV)");
     frame->SetYTitle("#sigma(#gammaPb)");
 
@@ -269,6 +269,76 @@ TGraphErrors* draw_psi2s_552()
     );
 }
 
+// #define RHO0_552_0n0n "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/neutron_tagging/rho0/552/rho0_552_0n0n.out"
+// #define RHO0_552_0nxn "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/neutron_tagging/rho0/552/rho0_552_0nxn.out"
+// #define RHO0_552_xnxn "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/neutron_tagging/rho0/552/rho0_552_xnxn.out"
+
+// #define ROOT_RHO0_552_0n0n "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/neutron_tagging/rho0/552_root/rho0_552_0n0n.root"
+// #define ROOT_RHO0_552_0nxn "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/neutron_tagging/rho0/552_root/rho0_552_0nxn.root"
+// #define ROOT_RHO0_552_xnxn "/home/huinaibing/huinaibing/PA/DATA_FILES/slight_out/neutron_tagging/rho0/552_root/rho0_552_xnxn.root"
+
+TGraphErrors* draw_rho0_536()
+{
+    string sql_536_rho0 = R"(select 
+                                a.wgp1,
+                                a.sigma2_gamA,
+                                a.wgp2,
+                                a.sigma1_gamA
+                            FROM
+                                rho0all a
+                                INNER join 
+                                    rho0_0n0n_cut_eta_y_bincontent b on a.y = b.y
+                                INNER JOIN
+                                    rho0_0nxn_cut_eta_y_bincontent c ON a.y = c.y
+                                INNER JOIN
+                                    rho0_xnxn_cut_eta_y_bincontent d ON a.y = d.y
+                            WHERE
+                                (b.bincontent) > 80
+                                AND (c.bincontent) > 80
+                                and (d.bincontent) > 80;
+                                
+    )";
+    BaseDataBaseReader* rho0_536_dbreader = new BaseDataBaseReader(
+        sql_536_rho0, "pbpb536rho0coherent"
+    );
+    return draw_graph(
+        rho0_536_dbreader, 
+        "#rho0 production at PbPb 5.36TeV",
+        "/home/huinaibing/huinaibing/PA/BUILD/neutron_tagging/rho0/536/rho0_coherent_536.png"
+    );
+}
+
+TGraphErrors* draw_rho0_552()
+{
+    string sql_552_rho0 = R"(select 
+                                a.wgp1,
+                                a.sigma2_gamA,
+                                a.wgp2,
+                                a.sigma1_gamA
+                            FROM
+                                rho0all a
+                                INNER join 
+                                    rho0_0n0n_cut_eta_y_bincontent b on a.y = b.y
+                                INNER JOIN
+                                    rho0_0nxn_cut_eta_y_bincontent c ON a.y = c.y
+                                INNER JOIN
+                                    rho0_xnxn_cut_eta_y_bincontent d ON a.y = d.y
+                            WHERE
+                                (b.bincontent) > 80
+                                AND (c.bincontent) > 80
+                                and (d.bincontent) > 80;
+                                
+    )";
+    BaseDataBaseReader* rho0_552_dbreader = new BaseDataBaseReader(
+        sql_552_rho0, "pbpb552rho0coherent"
+    );
+    return draw_graph(
+        rho0_552_dbreader, 
+        "rho0 production at PbPb 5.52TeV",
+        "/home/huinaibing/huinaibing/PA/BUILD/neutron_tagging/rho0/552/rho0_coherent_552.png"
+    );
+}
+
 /**
  * @details 
  * ## 存储数据
@@ -299,6 +369,7 @@ TGraphErrors* draw_psi2s_552()
  */
 void sigma_wgmpb_allinone_main()
 {
-    
-    draw_psi2s_552();
+    draw_rho0_536();
+    draw_rho0_552();
+
 }
