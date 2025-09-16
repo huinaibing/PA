@@ -36,11 +36,13 @@
 #include "AllInOne.h"
 
 
-#include "scripts/sigma_wgmpb_3.cpp"
+#include "scripts/sigma_wgmpb_all_in_one.cpp"
+//#include "scripts/sigma_wgmpb_2.cpp"
 
 int main()
 {
-    sigma_wgmpb_3_main();
+    
+    sigma_wgmpb_allinone_main();
 
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }

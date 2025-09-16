@@ -21,5 +21,11 @@
 #include <nlohmann/json.hpp>
 #include <cmath>
 #include "Utils.h"
+#include "BaseConverter2Root.h"
+#include "BaseDoubleParticalChannelManager.h"
+#include "BaseDrawGraph2.h"
+#include "BaseDataBaseReader.h"
+#include "DrawTGraphErrorHelper.h"
+
 
 #endif
