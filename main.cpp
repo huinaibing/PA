@@ -34,15 +34,13 @@
  */
 
 #include "AllInOne.h"
-
-
-#include "scripts/sigma_wgmpb_all_in_one.cpp"
-//#include "scripts/sigma_wgmpb_2.cpp"
+#include "scripts/phi_kk.cpp"
 
 int main()
 {
     
-    sigma_wgmpb_allinone_main();
+    PhiKK phi_kk;
+    phi_kk.Run();
 
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }
