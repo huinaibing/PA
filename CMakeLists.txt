@@ -36,6 +36,7 @@ set(SOURCES
     main.cpp
     src/BaseDrawGraph.cpp
     src/BaseDoubleParticalChannelManager.cpp
+    src/DoubleParticleReconstructManager.cpp
     src/BaseCSVManager.cpp
     src/DrawTH2DHelper.cpp
     src/DrawTGraphErrorHelper.cpp
