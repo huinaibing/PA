@@ -41,6 +41,7 @@ set(SOURCES
     src/DrawTH2DHelper.cpp
     src/DrawTGraphErrorHelper.cpp
     src/DataBaseManager.cpp
+    src/HitsFOCManager.cpp
     instance/MixEvents.cpp
     config_class/PPbCollision8_16ProtonPositive.cpp
     config_class/PPbCollision8_16Config.cpp

@@ -34,14 +34,13 @@
  */
 
 #include "AllInOne.h"
-#include "scripts/phi_kk.cpp"
+#include "HitsFOCManager.h"
+#include "TTree.h"
 // #include "scripts/test.cpp"
 
 int main()
 {
-    
-    PhiKK phi_kk;
-    phi_kk.Run();
-
+    HitsFOCManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/phi_kk/o2sim_HitsFOC.root", 902);
+    manager.classCheck();
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }
