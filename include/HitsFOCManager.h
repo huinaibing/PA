@@ -16,20 +16,6 @@ protected:
     TTree *fChain;  //! pointer to the analyzed TTree or TChain
     Int_t fCurrent; //! current Tree number in a TChain
 
-    Int_t kMaxFOCHit;
-
-    Int_t FOCHit_;
-    Int_t *FOCHit_mTrackID;
-    Float_t *FOCHit_mPos_fCoordinates_fX;
-    Float_t *FOCHit_mPos_fCoordinates_fY;
-    Float_t *FOCHit_mPos_fCoordinates_fZ;
-    Float_t *FOCHit_mTime;
-    Float_t *FOCHit_mHitValue;
-    Short_t *FOCHit_mDetectorID;
-    Int_t *FOCHit_mSubSystem;
-    Int_t *FOCHit_mPrimary;
-    Double_t *FOCHit_mInitialEnergy;
-
     // List of branches
     TBranch *b_FOCHit_;                     //!
     TBranch *b_FOCHit_mTrackID;             //!
@@ -46,6 +32,20 @@ protected:
     Long64_t total_entries;
 
 public:
+    Int_t kMaxFOCHit;
+
+    Int_t FOCHit_;
+    Int_t *FOCHit_mTrackID;
+    Float_t *FOCHit_mPos_fCoordinates_fX;
+    Float_t *FOCHit_mPos_fCoordinates_fY;
+    Float_t *FOCHit_mPos_fCoordinates_fZ;
+    Float_t *FOCHit_mTime;
+    Float_t *FOCHit_mHitValue;
+    Short_t *FOCHit_mDetectorID;
+    Int_t *FOCHit_mSubSystem;
+    Int_t *FOCHit_mPrimary;
+    Double_t *FOCHit_mInitialEnergy;
+    
     std::string getParticalName() override
     {
         return "HitsFOC";
@@ -64,7 +64,7 @@ public:
     HitsFOCManager(const char *file_name, int kMaxFOCHit)
     {
         this->kMaxFOCHit = kMaxFOCHit;
-        
+
         FOCHit_mTrackID = new Int_t[kMaxFOCHit];
         FOCHit_mPos_fCoordinates_fX = new Float_t[kMaxFOCHit];
         FOCHit_mPos_fCoordinates_fY = new Float_t[kMaxFOCHit];

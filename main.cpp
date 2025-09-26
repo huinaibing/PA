@@ -35,12 +35,13 @@
 
 #include "AllInOne.h"
 #include "HitsFOCManager.h"
+#include "scripts/focal/test_data.cpp"
 #include "TTree.h"
 // #include "scripts/test.cpp"
 
 int main()
 {
-    HitsFOCManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/phi_kk/o2sim_HitsFOC.root", 902);
-    manager.classCheck();
+    TestData a;
+    a.run();
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }
