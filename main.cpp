@@ -34,14 +34,17 @@
  */
 
 #include "AllInOne.h"
-#include "HitsFOCManager.h"
-#include "scripts/focal/test_data.cpp"
+#include "AliRootHitsFOCALManager.h"
 #include "TTree.h"
+
+
 // #include "scripts/test.cpp"
 
 int main()
 {
-    TestData a;
-    a.run();
+    AliRootHitsFOCALManager* mng = new AliRootHitsFOCALManager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/aliroot_focal_sim/FIT.Hits.root", "Event0", 1050);
+    mng->classCheck();
+    
+    
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }
