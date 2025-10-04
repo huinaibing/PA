@@ -1,4 +1,4 @@
-#include "AliRootHitsFOCALManager.h"
+#include "AliRootHitsFITManager.h"
 #include "Utils.h"
 #include "TH3F.h"
 #include <iostream>
@@ -6,7 +6,7 @@
 using namespace xqy;
 using namespace std;
 
-AliRootHitsFOCALManager::AliRootHitsFOCALManager(const char *file_name, const char *folder_name, int kMaxFIT)
+AliRootHitsFITManager::AliRootHitsFITManager(const char *file_name, const char *folder_name, int kMaxFIT)
 {
     this->kMaxFIT = kMaxFIT;
 
@@ -61,9 +61,9 @@ AliRootHitsFOCALManager::AliRootHitsFOCALManager(const char *file_name, const ch
 }
 
 
-void AliRootHitsFOCALManager::classCheck()
+void AliRootHitsFITManager::classCheck()
 {
-    cout << "classCheck for AliRootHitsFOCALManager" << endl;
+    cout << "classCheck for AliRootHitsFITManager" << endl;
     TH3F *hist_3d = new TH3F("hist_3d", "3D Hit Position", 100, -50, 50, 100, -50, 50, 1000, 300, 400);
 
     for (int i = 0; i < this->total_entries; i++)
@@ -83,7 +83,7 @@ void AliRootHitsFOCALManager::classCheck()
             #endif 
         }
     }
-    TFile *fout = new TFile("AliRootHitsFOCALManager_classCheck.root", "RECREATE");
+    TFile *fout = new TFile("AliRootHitsFITManager_classCheck.root", "RECREATE");
     TCanvas *c1 = new TCanvas("c1", "c1", 1800, 1600);
     hist_3d->Draw("BOX2");
     c1->Write();
