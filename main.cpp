@@ -34,13 +34,17 @@
  */
 
 #include "AllInOne.h"
-#include "scripts/phi_kk.cpp"
+#include "AliRootHitsFOCALManager.h"
+#include "TTree.h"
+
+
+// #include "scripts/test.cpp"
 
 int main()
 {
+    AliRootHitsFOCALManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/big_starlight_cohphika/FOCAL.Hits.root", "Event1000", 60);
+    manager.classCheck();
     
-    PhiKK phi_kk;
-    phi_kk.Run();
-
+    
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }
