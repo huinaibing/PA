@@ -42,7 +42,7 @@
 
 int main()
 {
-    AliRootHitsFOCALManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/big_starlight_cohphika/FOCAL.Hits.root", "Event1000", 60);
+    AliRootHitsFOCALManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/aliroot_change_geometry/FOCAL.Hits.root", "Event45", 60000);
     manager.classCheck();
     
     

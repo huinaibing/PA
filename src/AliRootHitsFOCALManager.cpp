@@ -12,6 +12,7 @@ using namespace std;
 AliRootHitsFOCALManager::AliRootHitsFOCALManager(const char *file_name, const char *folder_name, int kMaxFOCAL)
 {
     this->kMaxFOCAL = kMaxFOCAL;
+    this->folder_name = folder_name;
 
     FOCAL_fUniqueID = new UInt_t[kMaxFOCAL];
     FOCAL_fBits = new UInt_t[kMaxFOCAL];
@@ -49,11 +50,10 @@ AliRootHitsFOCALManager::AliRootHitsFOCALManager(const char *file_name, const ch
     fChain->SetBranchAddress("FOCAL.fTime", FOCAL_fTime, &b_FOCAL_fTime);
 }
 
-
 void AliRootHitsFOCALManager::classCheck()
 {
     cout << "Checking class AliRootHitsFOCALManager ..." << endl;
-    TH3F *h3 = new TH3F("h3", "h3", 100, -50, 50, 100, -50, 50, 1000, 600, 800);
+    TH3F *h3 = new TH3F("h3", "h3", 300, -50, 50, 300, -50, 50, 100, 600, 800);
 
     for (int i = 0; i < this->total_entries; i++)
     {
@@ -64,9 +64,34 @@ void AliRootHitsFOCALManager::classCheck()
         }
     }
 
-    TFile *fout = TFile::Open("AliRootHitsFOCALManager_classCheck.root", "RECREATE");
+    TFile *fout = TFile::Open(Utils::concatenate_const_char(this->folder_name, "_AliRootHitsFOCALManager_classCheck.root"), "RECREATE");
     TCanvas *c1 = new TCanvas("c1", "c1", 1800, 1600);
     h3->Draw("BOX2");
     c1->Write();
     fout->Close();
+}
+
+AliRootHitsFOCALManager::~AliRootHitsFOCALManager()
+{
+
+    // 释放一维动态数组
+    delete[] FOCAL_fUniqueID;
+    delete[] FOCAL_fBits;
+    delete[] FOCAL_fTrack;
+    delete[] FOCAL_fX;
+    delete[] FOCAL_fY;
+    delete[] FOCAL_fZ;
+    delete[] FOCAL_fIndex;
+    delete[] FOCAL_fEnergy;
+    delete[] FOCAL_fTime;
+
+    // 释放二维动态数组FOCAL_fVolume（先释放内层，再释放外层）
+    if (FOCAL_fVolume != nullptr)
+    { // 避免空指针访问
+        for (int i = 0; i < kMaxFOCAL; ++i)
+        {
+            delete[] FOCAL_fVolume[i]; // 释放每个内层数组
+        }
+        delete[] FOCAL_fVolume; // 释放外层数组
+    }
 }
