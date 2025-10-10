@@ -35,6 +35,7 @@
 
 #include "AllInOne.h"
 #include "AliRootHitsFOCALManager.h"
+#include "AliRootFOCALEventLooper.h"
 #include "TTree.h"
 
 
@@ -42,8 +43,9 @@
 
 int main()
 {
-    AliRootHitsFOCALManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/aliroot_change_geometry/FOCAL.Hits.root", "Event45", 60000);
-    manager.classCheck();
+    AliRootFOCALEventLooper looper("/home/huinaibing/focal_workdir/my_code/cut_eta_phikk/FOCAL.Hits.root", 10, 60000);
+    // manager.classCheck();
+    looper.classCheck();
     
     
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生

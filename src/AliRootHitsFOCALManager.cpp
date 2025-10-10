@@ -64,34 +64,45 @@ void AliRootHitsFOCALManager::classCheck()
         }
     }
 
-    TFile *fout = TFile::Open(Utils::concatenate_const_char(this->folder_name, "_AliRootHitsFOCALManager_classCheck.root"), "RECREATE");
+    TFile *fout = TFile::Open(
+        Utils::concatenate_const_char(
+            "classcheck4FOCAL/",
+            Utils::concatenate_const_char(
+                this->folder_name, 
+                "_AliRootHitsFOCALManager_classCheck.root"
+            )
+        ),
+        "RECREATE"
+    );
     TCanvas *c1 = new TCanvas("c1", "c1", 1800, 1600);
     h3->Draw("BOX2");
     c1->Write();
     fout->Close();
+    delete c1;
+    delete h3;
 }
 
 AliRootHitsFOCALManager::~AliRootHitsFOCALManager()
 {
 
-    // 释放一维动态数组
-    delete[] FOCAL_fUniqueID;
-    delete[] FOCAL_fBits;
-    delete[] FOCAL_fTrack;
-    delete[] FOCAL_fX;
-    delete[] FOCAL_fY;
-    delete[] FOCAL_fZ;
-    delete[] FOCAL_fIndex;
-    delete[] FOCAL_fEnergy;
-    delete[] FOCAL_fTime;
+    // // 释放一维动态数组
+    // delete[] FOCAL_fUniqueID;
+    // delete[] FOCAL_fBits;
+    // delete[] FOCAL_fTrack;
+    // delete[] FOCAL_fX;
+    // delete[] FOCAL_fY;
+    // delete[] FOCAL_fZ;
+    // delete[] FOCAL_fIndex;
+    // delete[] FOCAL_fEnergy;
+    // delete[] FOCAL_fTime;
 
-    // 释放二维动态数组FOCAL_fVolume（先释放内层，再释放外层）
-    if (FOCAL_fVolume != nullptr)
-    { // 避免空指针访问
-        for (int i = 0; i < kMaxFOCAL; ++i)
-        {
-            delete[] FOCAL_fVolume[i]; // 释放每个内层数组
-        }
-        delete[] FOCAL_fVolume; // 释放外层数组
-    }
+    // // 释放二维动态数组FOCAL_fVolume（先释放内层，再释放外层）
+    // if (FOCAL_fVolume != nullptr)
+    // { // 避免空指针访问
+    //     for (int i = 0; i < kMaxFOCAL; ++i)
+    //     {
+    //         delete[] FOCAL_fVolume[i]; // 释放每个内层数组
+    //     }
+    //     delete[] FOCAL_fVolume; // 释放外层数组
+    // }
 }
