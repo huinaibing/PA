@@ -7,6 +7,8 @@
 class AliRootHitsFOCALManager : public BaseManager
 {
 protected:
+    const char* folder_name;
+
     TTree *fChain;  //! pointer to the analyzed TTree or TChain
     Int_t fCurrent; //! current Tree number in a TChain
 
@@ -42,6 +44,7 @@ public:
     Float_t *FOCAL_fTime;    //[FOCAL_]
 
     AliRootHitsFOCALManager(const char *file_name, const char *folder_name, int kMaxFOCAL);
+    ~AliRootHitsFOCALManager();
 
     std::string getParticalName() override { return "FOCAL"; };
     Long64_t getTotalEntries() override { return this->total_entries; };
