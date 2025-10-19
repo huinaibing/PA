@@ -37,15 +37,18 @@
 #include "AliRootHitsFOCALManager.h"
 #include "AliRootFOCALEventLooper.h"
 #include "TTree.h"
+#include "scripts/focal/phiKKReconstruct.cpp"
 
 
 // #include "scripts/test.cpp"
 
 int main()
 {
-    AliRootFOCALEventLooper looper("/home/huinaibing/focal_workdir/my_code/cut_eta_phikk/FOCAL.Hits.root", 10, 60000);
-    // manager.classCheck();
-    looper.classCheck();
+    // PhiKKReconstruct looper("/home/huinaibing/focal_workdir/new_my_code/sl_phi_kk_geo_7mhcal/FOCAL.Hits.root", 20000, 40000);
+    // // manager.classCheck();
+    // looper.reconstructQA();
+    AliRootHitsFOCALManager manager("/home/huinaibing/focal_workdir/new_my_code/sl_phi_kk_geo_7mhcal/FOCAL.Hits.root", "Event12", 40000);
+    manager.classCheck();
     
     
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生

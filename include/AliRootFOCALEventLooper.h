@@ -18,7 +18,11 @@ public:
         this->total_events = total_events;
     }
 
-    void classCheck();
+    void classCheck(int start_idx, int end_index);
+
+    virtual void reconstructQA()
+    {
+    }
 };
 
 #endif

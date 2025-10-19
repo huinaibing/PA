@@ -21,6 +21,7 @@ public:
     virtual std::string getParticalName() = 0;
     virtual Long64_t getTotalEntries() = 0;
     virtual void setCurrentEntry(Long64_t entry) = 0;
+    virtual ~BaseManager() = default;
 };
 
 #endif

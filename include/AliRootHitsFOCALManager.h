@@ -44,8 +44,7 @@ public:
     Float_t *FOCAL_fTime;    //[FOCAL_]
 
     AliRootHitsFOCALManager(const char *file_name, const char *folder_name, int kMaxFOCAL);
-    ~AliRootHitsFOCALManager();
-
+    ~AliRootHitsFOCALManager() override;
     std::string getParticalName() override { return "FOCAL"; };
     Long64_t getTotalEntries() override { return this->total_entries; };
     void setCurrentEntry(Long64_t entry) override { fChain->GetEntry(entry); };

@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include "TH3F.h"
 
 using namespace xqy;
@@ -53,7 +54,7 @@ AliRootHitsFOCALManager::AliRootHitsFOCALManager(const char *file_name, const ch
 void AliRootHitsFOCALManager::classCheck()
 {
     cout << "Checking class AliRootHitsFOCALManager ..." << endl;
-    TH3F *h3 = new TH3F("h3", "h3", 300, -50, 50, 300, -50, 50, 100, 600, 800);
+    TH3F *h3 = new TH3F("h3", "h3", 300, -50, 50, 300, -50, 50, 100, 700, 860);
 
     for (int i = 0; i < this->total_entries; i++)
     {
@@ -68,41 +69,61 @@ void AliRootHitsFOCALManager::classCheck()
         Utils::concatenate_const_char(
             "classcheck4FOCAL/",
             Utils::concatenate_const_char(
-                this->folder_name, 
-                "_AliRootHitsFOCALManager_classCheck.root"
-            )
-        ),
-        "RECREATE"
-    );
+                this->folder_name,
+                "_AliRootHitsFOCALManager_classCheck.root")),
+        "RECREATE");
     TCanvas *c1 = new TCanvas("c1", "c1", 1800, 1600);
     h3->Draw("BOX2");
     c1->Write();
     fout->Close();
     delete c1;
     delete h3;
+
+    ofstream ofs;
+    ofs.open(
+        Utils::concatenate_const_char(
+            "classcheck4FOCALTXT/",
+            Utils::concatenate_const_char(
+                this->folder_name,
+                "_AliRootHitsFOCALManager_classCheck.txt")),
+        ios::out);
+    for (int i = 0; i < this->total_entries; i++)
+    {
+        this->setCurrentEntry(i);
+        ofs << "particle " << i << " : " << FOCAL_ << " hits" << endl;
+        for (int j = 0; j < FOCAL_; j++)
+        {
+            ofs << "  Hit " << j << " : "
+                << "TrackID: " << FOCAL_fTrack[j] << ", "
+                << "X: " << FOCAL_fX[j] << ", "
+                << "Y: " << FOCAL_fY[j] << ", "
+                << "Z: " << FOCAL_fZ[j] << ", "
+                << "Energy: " << FOCAL_fEnergy[j] << ", "
+                << "Time: " << FOCAL_fTime[j] << ", "
+                << "fUniqueID: " << FOCAL_fUniqueID[j] << endl;
+        }
+        ofs << "----------------------------------------" << endl;
+    }
+    ofs.close();
 }
 
 AliRootHitsFOCALManager::~AliRootHitsFOCALManager()
 {
-
-    // // 释放一维动态数组
-    // delete[] FOCAL_fUniqueID;
-    // delete[] FOCAL_fBits;
-    // delete[] FOCAL_fTrack;
-    // delete[] FOCAL_fX;
-    // delete[] FOCAL_fY;
-    // delete[] FOCAL_fZ;
-    // delete[] FOCAL_fIndex;
-    // delete[] FOCAL_fEnergy;
-    // delete[] FOCAL_fTime;
-
-    // // 释放二维动态数组FOCAL_fVolume（先释放内层，再释放外层）
-    // if (FOCAL_fVolume != nullptr)
-    // { // 避免空指针访问
-    //     for (int i = 0; i < kMaxFOCAL; ++i)
-    //     {
-    //         delete[] FOCAL_fVolume[i]; // 释放每个内层数组
-    //     }
-    //     delete[] FOCAL_fVolume; // 释放外层数组
+    // cout << "Destructing AliRootHitsFOCALManager ..." << endl;
+    delete[] FOCAL_fUniqueID;
+    delete[] FOCAL_fBits;
+    delete[] FOCAL_fTrack;
+    delete[] FOCAL_fX;
+    delete[] FOCAL_fY;
+    delete[] FOCAL_fZ;
+    delete[] FOCAL_fIndex;
+    // for (int i = 0; i < this->kMaxFOCAL; i++)
+    // {
+    //     cout << FOCAL_fVolume[i][0] << endl;
+    //     // delete FOCAL_fVolume[i];
     // }
+    delete[] FOCAL_fVolume;
+    delete[] FOCAL_fEnergy;
+    delete[] FOCAL_fTime;
+    delete fChain->GetCurrentFile();
 }
