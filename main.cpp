@@ -34,8 +34,7 @@
  */
 
 #include "AllInOne.h"
-#include "AliRootHitsFOCALManager.h"
-#include "AliRootFOCALEventLooper.h"
+#include "AliRootClusterEventManager.h"
 #include "TTree.h"
 #include "scripts/focal/phiKKReconstruct.cpp"
 
@@ -47,7 +46,7 @@ int main()
     // PhiKKReconstruct looper("/home/huinaibing/focal_workdir/new_my_code/sl_phi_kk_geo_7mhcal/FOCAL.Hits.root", 20000, 40000);
     // // manager.classCheck();
     // looper.reconstructQA();
-    AliRootHitsFOCALManager manager("/home/huinaibing/focal_workdir/new_my_code/sl_phi_kk_geo_7mhcal/FOCAL.Hits.root", "Event12", 40000);
+    AliRootClusterEventManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/cluster/focalClusters.root", "Event0");
     manager.classCheck();
     
     
