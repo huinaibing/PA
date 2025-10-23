@@ -19,13 +19,33 @@ namespace xqy
         static constexpr float jpsi_mass = 3.0969;     // GeV
         static constexpr float psi2s_mass = 3.686097;  // GeV
 
+        static double vectorAngleCosine(double x1, double y1, double z1,
+                                 double x2, double y2, double z2)
+        {
+            // 计算点积
+            double dotProduct = x1 * x2 + y1 * y2 + z1 * z2;
+
+            // 计算两个向量的模长
+            double mag1 = std::sqrt(x1 * x1 + y1 * y1 + z1 * z1);
+            double mag2 = std::sqrt(x2 * x2 + y2 * y2 + z2 * z2);
+
+            // 处理零向量（模长接近0，避免除零）
+            if (mag1 < 1e-9 || mag2 < 1e-9)
+            {
+                throw std::domain_error("向量不能为零向量（模长为0）");
+            }
+
+            // 返回夹角余弦值
+            return dotProduct / (mag1 * mag2);
+        }
+
         /**
          * @brief 四舍五入
-         * 
+         *
          * @param value 传入的值
          * @param decimal_places 保留几位有效数字
-         * @example round_to_decimal(8.955, 2); 结果: 8.96 
-         * @return double 
+         * @example round_to_decimal(8.955, 2); 结果: 8.96
+         * @return double
          */
         static double round_to_decimal(double value, int decimal_places)
         {

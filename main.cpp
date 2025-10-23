@@ -33,22 +33,44 @@
  * @section 用法：在scripts里面写主体分析代码，在这里调用，然后cmake
  */
 
-#include "AllInOne.h"
-#include "AliRootClusterEventManager.h"
-#include "TTree.h"
-#include "scripts/focal/phiKKReconstruct.cpp"
+// #include "scripts/focal/phiKKReconstruct.cpp"
+// #include "AliRootFOCALEventLooper.h"
+// #include "scripts/phi_kk.cpp"
+
+#include "TH1F.h"
+#include "TF1.h"
+#include "TMath.h"
+#include "TFile.h"
 
 
-// #include "scripts/test.cpp"
+
 
 int main()
 {
-    // PhiKKReconstruct looper("/home/huinaibing/focal_workdir/new_my_code/sl_phi_kk_geo_7mhcal/FOCAL.Hits.root", 20000, 40000);
-    // // manager.classCheck();
-    // looper.reconstructQA();
-    AliRootClusterEventManager manager("/home/huinaibing/git_repo/PA/DATA_FILES/focal/cluster/focalClusters.root", "Event0");
-    manager.classCheck();
-    
-    
+    // AliRootFOCALEventLooper * manager = new AliRootFOCALEventLooper("/home/huinaibing/focal_workdir/new_my_code/sl_rho0_pipi/FOCAL.Hits.root", 20000, 40000);
+    // manager->classCheck(0, 100);
+    // // phi_kk_reconstruct_footbook();
+    // PhiKK a;
+    // a.Convert();
+    // a.Run();
+
+    TFile* fout = new TFile("homework.root", "RECREATE");
+    TF1* fP = new TF1("p", "19 / 36 * TMath::Pi() * TMath::Pi() * x* x* x* x", 0, 1);
+    TF1* fE = new TF1("e", "TMath::Pi() * TMath::Pi() * x * x * x * x * 19 / 12", 0, 1);
+    TF1* fS = new TF1("s", "TMath::Pi() * TMath::Pi() * x * x * x * 19 / 9", 0, 1);
+
+    fP->GetXaxis()->SetTitle("T(GeV)");
+    fE->GetXaxis()->SetTitle("T(GeV)");
+    fS->GetXaxis()->SetTitle("T(GeV)");
+
+    fP->GetYaxis()->SetTitle("P(GeV^4)");
+    fE->GetYaxis()->SetTitle("energy(GeV^4)");
+    fS->GetYaxis()->SetTitle("entropy(GeV^3)");
+
+    fP->Write();
+    fE->Write();
+    fS->Write();
+    fout->Close();
+
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }

@@ -46,6 +46,7 @@ set(SOURCES
     src/AliRootHitsFOCALManager.cpp
     src/AliRootFOCALEventLooper.cpp
     src/AliRootClusterEventManager.cpp
+    src/AliRootFOCALHClusterManager.cpp
     instance/MixEvents.cpp
     config_class/PPbCollision8_16ProtonPositive.cpp
     config_class/PPbCollision8_16Config.cpp
