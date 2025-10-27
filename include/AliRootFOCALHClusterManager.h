@@ -37,6 +37,9 @@ public:
     AliRootFOCALHClusterManager(const char *file_name, float son_particle_mass);
 
     double getReconstructMass();
+
+    double getEnergy1() { return this->e1; }
+    double getEnergy2() { return this->e2; }
 };
 
 #endif
