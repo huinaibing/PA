@@ -107,6 +107,20 @@ void AliRootHitsFOCALManager::classCheck()
     ofs.close();
 }
 
+double AliRootHitsFOCALManager::getSumOfHitsEnergy()
+{
+    double sum_energy = 0.0;
+     for (int i = 0; i < this->total_entries; i++)
+    {
+        this->setCurrentEntry(i);
+        for (int j = 0; j < FOCAL_; j++)
+        {
+            sum_energy += FOCAL_fEnergy[j];
+        }
+    }
+    return sum_energy / 1000 / 1000; // 转换为GeV
+}
+
 AliRootHitsFOCALManager::~AliRootHitsFOCALManager()
 {
     // cout << "Destructing AliRootHitsFOCALManager ..." << endl;

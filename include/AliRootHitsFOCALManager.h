@@ -7,7 +7,7 @@
 class AliRootHitsFOCALManager : public BaseManager
 {
 protected:
-    const char* folder_name;
+    const char *folder_name;
 
     TTree *fChain;  //! pointer to the analyzed TTree or TChain
     Int_t fCurrent; //! current Tree number in a TChain
@@ -50,6 +50,7 @@ public:
     void setCurrentEntry(Long64_t entry) override { fChain->GetEntry(entry); };
 
     void classCheck();
+    double getSumOfHitsEnergy();
 };
 
 #endif

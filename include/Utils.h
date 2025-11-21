@@ -20,7 +20,7 @@ namespace xqy
         static constexpr float psi2s_mass = 3.686097;  // GeV
 
         static double vectorAngleCosine(double x1, double y1, double z1,
-                                 double x2, double y2, double z2)
+                                        double x2, double y2, double z2)
         {
             // 计算点积
             double dotProduct = x1 * x2 + y1 * y2 + z1 * z2;
@@ -282,6 +282,25 @@ namespace xqy
             return coef * (first_term - second_term);
         }
     };
+
+    class Physics
+    {
+    public:
+        /**
+         * @brief wood saxon分布函数rho(r)
+         *
+         * @param r 半径
+         * @param R 核的半径
+         * @param d 表面厚度
+         * @param rho0 中心密度
+         * @return double 指定半径处的密度
+         */
+        static double wood_saxon(double r, double R, double d, double rho0)
+        {
+            return rho0 / (1 + TMath::Exp((r - R) / d));
+        }
+    };
+
 }
 
 #endif

@@ -24,9 +24,15 @@ double AliRootFOCALHClusterManager::getReconstructMass()
     double cos_theta = Utils::vectorAngleCosine(x1, y1, FOCALH_Z,
                                                 x2, y2, FOCALH_Z);
 
-    return sqrt(
+    double val =  sqrt(
         2 * son_particle_mass * son_particle_mass + 2 * e1 * e2 - 2 \
         * sqrt(e1 * e1 - son_particle_mass * son_particle_mass) \
         * sqrt(e2 * e2 - son_particle_mass * son_particle_mass) * cos_theta
     );
+
+    if (std::isnan(val))
+    {
+        return 0.09;
+    }
+    return val;
 }
