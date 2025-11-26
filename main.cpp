@@ -37,22 +37,22 @@
 // #include "AliRootFOCALEventLooper.h"
 // #include "scripts/phi_kk.cpp"
 
-#include "scripts/tests/woodsaxon.cpp"
-#include "TH1F.h"
-#include "TF1.h"
-#include "TMath.h"
-#include "TFile.h"
-
+// #include "scripts/tests/woodsaxon.cpp"
+// #include "TH1F.h"
+// #include "TF1.h"
+// #include "TMath.h"
+// #include "TFile.h"
+#include "scripts/tests/draw_bb_pi_k_p.cpp"
 int main()
 {
     // AliRootFOCALEventLooper* looper = new AliRootFOCALEventLooper(
-    //     "/home/huinaibing/focal_workdir/new_my_code/sl_phi_kk_geo_7mhcal/FOCAL.Hits.root",
-    //     1000,
-    //     20000
+    //     "/home/huinaibing/aliroot_workdir/my_code/hijing_small/FOCAL.Hits.root",
+    //     1,
+    //     200000
     // );
-    // looper->classCheck(0, 20000);
+    // looper->classCheck(0, 1);
 
-    woodsaxon();
+    draw_bb_pi_k_p();
 
     return 0; // 写C++不在main函数里面return的注定会度过一个失败的人生
 }

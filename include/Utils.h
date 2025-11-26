@@ -299,6 +299,30 @@ namespace xqy
         {
             return rho0 / (1 + TMath::Exp((r - R) / d));
         }
+
+        /**
+         * @brief Bethe Bloch公式计算带电粒子在物质中的能量损失，注意到只用于重离子别用于电子
+         *
+         * @param inject_z 入射粒子电荷数
+         * @param material_Z 材料的电荷数
+         * @param material_A 材料的质量数
+         * @param beta 入射粒子的速度（自然单位）
+         * @return double 单位 MeV/g/cm2，注意到返回的是<-dE/dx>
+         */
+        static double bethe_bloch(int inject_z, int material_Z, double material_A, double beta)
+        {
+            const double K = 0.3071;                          // MeV mol-1 cm2
+            double I = 16e-6 * TMath::Power(material_Z, 0.9); // MeV
+            double gamma = 1.0 / TMath::Sqrt(1 - beta * beta);
+            double T_max = 2 * 0.511 * beta * beta * gamma * gamma; // 注意到做了近似
+            return K * material_Z / material_A / beta / beta * (0.5 * TMath::Log(T_max * T_max / (I * I)) - beta * beta);
+        }
+
+        static double bethe_bloch(int inject_z, int material_Z, double material_A, double momentum, double mass)
+        {
+            double beta = momentum / TMath::Sqrt(momentum * momentum + mass * mass);
+            return bethe_bloch(inject_z, material_Z, material_A, beta);
+        }
     };
 
 }
