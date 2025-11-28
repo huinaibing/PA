@@ -1,13 +1,15 @@
 #include <iostream>
-
+#include "TF1.h"
 #include "TFile.h"
 #include "TProfile.h"
 #include "TCanvas.h"
 #include "TH1.h"
+#include "TProfile2D.h"
+
 using namespace std;
 void draw_corrolation_v2pt()
 {
-    TFile *file = TFile::Open("/home/huinaibing/Downloads/AnalysisResults3.root");
+    TFile *file = TFile::Open("/home/huinaibing/Downloads/AnalysisResults7.root");
 
     TDirectory *dir = (TDirectory *)file->Get("pid-flow-pt-corr");
 
@@ -46,6 +48,16 @@ void draw_corrolation_v2pt()
 
             double A = ptSquareAve - ptAve * ptAve;
             double B = c24 - c22 * c22;
+
+            cout << cov << endl;
+
+            if (A <= 0 || B <= 0)
+            {
+                tmp->SetBinContent(i, 0);
+                tmp->SetBinError(i, 0);
+                continue;
+            }
+
             double sigma_A = sqrt(sigma_ptSqureAve * sigma_ptSqureAve + 4 * ptAve * ptAve * sigma_ptAve * sigma_ptAve);
             double sigma_B = sqrt(sigma_c24 * sigma_c24 + 4 * c22 * c22 * sigma_c22 * sigma_c22);
 
@@ -58,7 +70,7 @@ void draw_corrolation_v2pt()
         TCanvas *c1 = new TCanvas("c1", "c1", 1800, 1000);
         tmp->Draw();
         tmp->GetXaxis()->SetTitle("cent %");
-        tmp->GetYaxis()->SetTitle("#rho");
+        tmp->GetYaxis()->SetTitle("#rho(v2,pt)");
         tmp->SetTitle("");
         c1->SaveAs("v2ptcorre_from_diffpt_3.png");
     }
@@ -96,6 +108,16 @@ void draw_corrolation_v2pt()
             double partial_ptSquareAve = -(cov_v2pt - ptAve * c22) / 2 / (ptSquareAve - ptAve * ptAve) / sqrt(ptSquareAve - ptAve * ptAve) / sqrt(c24 - c22 * c22);
             double partial_c24 = -(cov_v2pt - ptAve * c22) / 2 / (c24 - c22 * c22) / sqrt(ptSquareAve - ptAve * ptAve) / sqrt(c24 - c22 * c22);
 
+            double A = ptSquareAve - ptAve * ptAve;
+            double B = c24 - c22 * c22;
+
+            if (A <= 0 || B <= 0)
+            {
+                tmp->SetBinContent(i, 0);
+                tmp->SetBinError(i, 0);
+                continue;
+            }
+
             double sigma_v2ptcorre = sqrt(
                 partial_cov_v2pt * partial_cov_v2pt * sigma_cov_v2pt * sigma_cov_v2pt +
                 partial_ptAve * partial_ptAve * sigma_ptAve * sigma_ptAve +
@@ -109,8 +131,88 @@ void draw_corrolation_v2pt()
         TCanvas *c2 = new TCanvas("c2", "c2", 1800, 1000);
         tmp->Draw();
         tmp->GetXaxis()->SetTitle("cent %");
-        tmp->GetYaxis()->SetTitle("#rho");
+        tmp->GetYaxis()->SetTitle("#rho(v2,pt)");
         tmp->SetTitle("");
         c2->SaveAs("v2ptcorre_from_mean.png");
+    }
+
+    /**
+     * @brief 第三种方式，直接从图里面去提取
+     *
+     */
+    {
+        TH1D *tmp = new TH1D("v2ptcorre_from_graph", "v2ptcorre", 10, new double[11]{0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90});
+
+        TProfile2D *v2pt_graph = (TProfile2D *)dir->Get("c22dmeanpt");
+
+        double threshold = 999; // 相对误差阈值
+        for (int i = 1; i <= v2pt_graph->GetNbinsX(); ++i)
+        {
+            // 首先，提取每个bin的内容（每个xbin的centrality不一样）
+            // 注意到要筛选
+            TH1D *h_onebin = new TH1D("onebin", "onebin", v2pt_graph->GetNbinsY(), 0, 3);
+            for (int j = 1; j <= v2pt_graph->GetNbinsY(); ++j)
+            {
+                double bin_content = v2pt_graph->GetBinContent(i, j);
+                double bin_error = v2pt_graph->GetBinError(i, j);
+                if (bin_content == 0 || bin_error / fabs(bin_content) > threshold)
+                    continue;
+                h_onebin->SetBinContent(j, bin_content);
+                h_onebin->SetBinError(j, bin_error);
+            }
+            // 然后，对提取出来的每个bin，进行线性拟合，截距就是cov(v2,pt)
+            TF1 *fit_func = new TF1("fit_func", [](double *x, double *p)
+                                    { return x[0] * p[0]; }, 0, 3, 1);
+
+            h_onebin->Fit(fit_func, "RW");
+            double slope = fit_func->GetParameter(0);
+            double slope_error = fit_func->GetParError(0);
+            cout << "slope: " << slope << " +- " << slope_error << endl;
+
+            // 现在开始计算rho(v2,pt)
+            double cov = slope;
+            double sigma_cov = slope_error;
+
+            double ptAve = h_ptAve->GetBinContent(i);
+            double sigma_ptAve = h_ptAve->GetBinError(i);
+
+            double ptSquareAve = h_ptSquareAve->GetBinContent(i);
+            double sigma_ptSqureAve = h_ptSquareAve->GetBinError(i);
+
+            double c22 = h_c22->GetBinContent(i);
+            double sigma_c22 = h_c22->GetBinContent(i);
+
+            double c24 = h_c24->GetBinContent(i);
+            double sigma_c24 = h_c24->GetBinContent(i);
+
+            double v2ptcorre = cov / sqrt(ptSquareAve - ptAve * ptAve) / sqrt(c24 - c22 * c22);
+
+            double A = ptSquareAve - ptAve * ptAve;
+            double B = c24 - c22 * c22;
+
+            cout << cov << endl;
+
+            if (A <= 0 || B <= 0)
+            {
+                tmp->SetBinContent(i, 0);
+                tmp->SetBinError(i, 0);
+                continue;
+            }
+
+            double sigma_A = sqrt(sigma_ptSqureAve * sigma_ptSqureAve + 4 * ptAve * ptAve * sigma_ptAve * sigma_ptAve);
+            double sigma_B = sqrt(sigma_c24 * sigma_c24 + 4 * c22 * c22 * sigma_c22 * sigma_c22);
+
+            double sigma_v2ptcorre = v2ptcorre * sqrt(sigma_cov * sigma_cov / cov / cov + sigma_A * sigma_A / 2 / A / 2 / A + sigma_B * sigma_B / 2 / 2 / B / B);
+
+            tmp->SetBinContent(i, v2ptcorre);
+            tmp->SetBinError(i, sigma_v2ptcorre);
+        }
+
+        TCanvas *c3 = new TCanvas("c3", "c3", 1800, 1000);
+        tmp->Draw();
+        tmp->GetXaxis()->SetTitle("cent %");
+        tmp->GetYaxis()->SetTitle("#rho(v2,pt)");
+        tmp->SetTitle("");
+        c3->SaveAs("v2ptcorre_from_graph.png");
     }
 }
