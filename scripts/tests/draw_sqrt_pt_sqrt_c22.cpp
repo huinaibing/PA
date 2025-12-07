@@ -10,7 +10,8 @@ using namespace std;
 
 void draw_sqrt_pt_sqrt_c22()
 {
-    TFile *file = TFile::Open("/home/huinaibing/Downloads/AnalysisResults7.root");
+    TFile *file = TFile::Open("/home/huinaibing/Downloads/AnalysisResults12_4.root");
+    TFile *file_output = TFile::Open("sqrt_pt_c22.root", "RECREATE");
 
     TDirectory *dir = (TDirectory *)file->Get("pid-flow-pt-corr");
 
@@ -20,8 +21,8 @@ void draw_sqrt_pt_sqrt_c22()
     TProfile *h_c22 = (TProfile *)dir->Get("c22");
     TProfile *h_c24 = (TProfile *)dir->Get("c24");
 
-    TH1D *sqrt_varpt = new TH1D("sqrtvarpt", "sqrtvarpt", 10, new double[11]{0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90});
-    TH1D *sqrt_varc22 = new TH1D("sqrtvarc22", "sqrtvarc22", 10, new double[11]{0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90});
+    TH1D *sqrt_varpt = new TH1D("sqrtvarpt", "sqrtvarpt", 11, new double[12]{0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90});
+    TH1D *sqrt_varc22 = new TH1D("sqrtvarc22", "sqrtvarc22", 11, new double[12]{0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90});
 
     for (int i = 1; i <= h_cov_v2pt_diffpt->GetNbinsX(); ++i)
     {
@@ -43,6 +44,9 @@ void draw_sqrt_pt_sqrt_c22()
 
     TCanvas *c1 = new TCanvas("c1", "c1", 1800, 1000);
     sqrt_varpt->Draw();
+    c1->Write();
     TCanvas *c2 = new TCanvas("c2", "c2", 1800, 1000);
     sqrt_varc22->Draw();
+    c2->Write();
+    file_output->Close();
 }
